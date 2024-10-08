@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/default_white"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp">
 
@@ -41,7 +41,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:text="Dominic &quot;THE GOAT&quot; Sia XXXXXXXX"
-                    android:textColor="#000"
+                    android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
