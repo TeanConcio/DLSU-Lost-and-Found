@@ -1,5 +1,7 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public abstract class Item {
@@ -12,7 +14,7 @@ public abstract class Item {
     private String location;
     private Integer image;
 
-    private Date dateClaimed;
+    private LocalDateTime dateClaimed;
 
     public Item(String name,
                 ItemStatus status,
@@ -85,10 +87,10 @@ public abstract class Item {
         this.image = image;
     }
 
-    public Date getDateClaimed() {
+    public LocalDateTime getDateClaimed() {
         return this.dateClaimed;
     }
-    public void setDateClaimed(Date dateClaimed) {
+    public void setDateClaimed(LocalDateTime dateClaimed) {
         this.dateClaimed = dateClaimed;
     }
 }

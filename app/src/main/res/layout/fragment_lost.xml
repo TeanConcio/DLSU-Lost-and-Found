@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:circularflow_defaultRadius="10dp"
-    tools:context=".ui.Lost.LostFragment"
-    android:layout_marginBottom="56dp">
+    tools:context=".ui.Lost.LostFragment">
 
     <LinearLayout
         android:id="@+id/lostSearchBar"
@@ -58,10 +57,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView1"
@@ -85,10 +81,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -112,10 +105,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -139,10 +129,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView4"
@@ -166,10 +153,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -193,10 +177,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView6"
@@ -220,10 +201,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView7"
@@ -247,10 +225,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView8"
@@ -274,10 +249,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingStart="12.5dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12.5dp"
-                android:paddingBottom="10dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/imageView9"

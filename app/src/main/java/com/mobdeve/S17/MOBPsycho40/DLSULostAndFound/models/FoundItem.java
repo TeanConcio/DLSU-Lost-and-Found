@@ -7,7 +7,6 @@ public class FoundItem extends Item {
     private Date dateFound;
 
     public FoundItem(String name,
-                     ItemStatus status,
                      String category,
                      String description,
                      String campus,
