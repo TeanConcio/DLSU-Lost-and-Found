@@ -1,191 +1,199 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/default_white"
+    android:background="@color/white"
     tools:context=".FoundItemActivity">
 
-
-    <ImageView
-        android:id="@+id/foodImage"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_marginTop="60dp"
-
-        android:contentDescription="Image of the found item"
-        android:src="@drawable/the_goat"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/foundItemName"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="The Goat"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText" />
-
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:text="Category:"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            />
-
-        <TextView
-            android:id="@+id/foundItemCategory"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Special Grade Sorcerer"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:text="Campus:"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            />
-
-        <TextView
-            android:id="@+id/foundItemCampus"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Manila"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:text="Location Found:"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            />
-
-        <TextView
-            android:id="@+id/foundItemLocationFound"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Andrew 2nd Floor"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText"
-            />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:text="Date Found:"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            />
-
-        <TextView
-            android:id="@+id/foundItemDateFound"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:text="08/10/2024"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText"
-            />
-    </LinearLayout>
-
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:text="Detailed Description:"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText"
-        />
-
-    <TextView
-        android:id="@+id/foundItemDetailedDescription"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="10dp"
-        android:background="@drawable/border"
-        android:text="This is a detailed description of the found item"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        tools:ignore="HardcodedText"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+
+            <ImageView
+                android:id="@+id/foundItemImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/the_goat"
+                android:contentDescription="Image of the found item"
+                tools:ignore="HardcodedText" />
 
 
 
+            <!-- Title of the found item -->
+            <TextView
+                android:id="@+id/foundItemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="The Goat"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- Information Section with Shadows -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <!-- Card for Category -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Category: "
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/foundItemCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Special Grade Sorcerer"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        tools:ignore="HardcodedText"/>
+
+                </LinearLayout>
+
+                <!-- Card for Location Found -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:elevation="2dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Location Found: "
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/foundItemLocationFound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Andrew 2nd Floor"
+                        android:textSize="18sp"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+                    <!-- Card for Campus -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:elevation="2dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Campus: "
+                            android:textSize="16sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/foundItemCampus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Manila"
+                            android:textSize="18sp"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+
+                    <!-- Card for Date Found -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="160dp"
+                        android:elevation="2dp"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date Found: "
+                            android:textSize="16sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/foundItemDateFound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="08/10/2024"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Detailed Description Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detailed Description:"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/foundItemDetailedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:background="@drawable/description_box_background"
+                android:text="This is a detailed description of the found item. Is he the strongest because he is Dominic Sia or is he Dominic Sia because he is the strongest?, This is a detailed description of the found item. Is he the strongest because he is Dominic Sia or is he Dominic Sia because he is the strongest?"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Claim Item"
+                tools:ignore="HardcodedText" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
