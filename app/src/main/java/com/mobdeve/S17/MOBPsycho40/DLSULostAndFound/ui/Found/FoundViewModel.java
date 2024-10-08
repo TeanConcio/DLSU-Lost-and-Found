@@ -1,16 +1,16 @@
-package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.dashboard;
+package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class FoundViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public FoundViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is found fragment");
     }
 
     public LiveData<String> getText() {
