@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="green_700">#16423C </color>
+    <color name="green_500">#6A9C89</color>
+    <color name="green_200">#C4DAD2</color>
+    <color name="default_white">#E9EFEC</color>
+    <color name="dlsu_green">#26532B</color>
+
+
 </resources>
