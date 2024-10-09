@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ItemActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
@@ -51,7 +52,16 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Display " + currentItem.getName() + " information", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Display " + currentItem.getName() + " information", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, ItemActivity.class);
+                i.putExtra("image",currentItem.getImage());
+                i.putExtra("name",currentItem.getName());
+                i.putExtra("category",currentItem.getCategory());
+                i.putExtra("date",currentItem.getDateLost().format(dateTimeFormatter));
+                i.putExtra("campus", currentItem.getCampus());
+                i.putExtra("location",currentItem.getLocation());
+                i.putExtra("description", currentItem.getDescription());
+                context.startActivity(i);
             }
         });
     }

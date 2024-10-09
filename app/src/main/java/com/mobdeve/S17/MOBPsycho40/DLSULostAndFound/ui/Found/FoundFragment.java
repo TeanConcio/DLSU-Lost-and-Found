@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.FoundItemActivity;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ItemActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 
 public class FoundFragment extends Fragment {
@@ -35,7 +35,7 @@ public class FoundFragment extends Fragment {
         //TODO: FOR TESTING ONLY, YOU CAN REMOVE IT
         final Button actionButton = binding.buttonAction;  // Bind the button from XML
         actionButton.setOnClickListener(v-> {
-            Intent intent = new Intent(getActivity(), FoundItemActivity.class);
+            Intent intent = new Intent(getActivity(), ItemActivity.class);
             startActivity(intent);
 
         });
