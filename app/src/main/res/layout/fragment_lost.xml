@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <SearchView
+            android:id="@+id/lostSearch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -30,14 +31,14 @@
             android:backgroundTint="@color/default_white"
             android:iconifiedByDefault="false"
             android:padding="5dp"
-            android:queryHint="Search Items"
+            android:queryHint="Search Lost Items"
             android:textColor="@color/green_700"
             android:textSize="20sp">
 
         </SearchView>
 
         <ImageButton
-            android:id="@+id/filterButton"
+            android:id="@+id/lostFilterButton"
             android:layout_width="37.5dp"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"

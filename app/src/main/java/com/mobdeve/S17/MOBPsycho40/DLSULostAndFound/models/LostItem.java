@@ -1,7 +1,6 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class LostItem extends Item {
 
