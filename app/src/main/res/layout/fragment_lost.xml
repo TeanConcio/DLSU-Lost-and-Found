@@ -27,7 +27,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
-            android:background="@drawable/description_box_background"
+            android:background="@drawable/bg_description_box"
             android:backgroundTint="@color/default_white"
             android:iconifiedByDefault="false"
             android:padding="5dp"
@@ -81,7 +81,7 @@
                     android:id="@+id/imageView0"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView0"
@@ -96,7 +96,7 @@
                 android:id="@+id/lostFilter1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -106,7 +106,7 @@
                     android:id="@+id/imageView1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView1"
@@ -120,7 +120,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -130,7 +130,7 @@
                     android:id="@+id/imageView2"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -144,7 +144,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -154,7 +154,7 @@
                     android:id="@+id/imageView3"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -168,7 +168,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -178,7 +178,7 @@
                     android:id="@+id/imageView4"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -192,7 +192,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -202,7 +202,7 @@
                     android:id="@+id/imageView5"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView5"
@@ -216,7 +216,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -226,7 +226,7 @@
                     android:id="@+id/imageView6"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -240,7 +240,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -250,7 +250,7 @@
                     android:id="@+id/imageView7"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -264,7 +264,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -274,7 +274,7 @@
                     android:id="@+id/imageView8"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -288,7 +288,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ripple_green_200"
+                android:background="@drawable/bg_ripple_green_200"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -298,7 +298,7 @@
                     android:id="@+id/imageView9"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/the_goat" />
+                    android:src="@drawable/sample_the_goat" />
 
                 <TextView
                     android:id="@+id/textView9"

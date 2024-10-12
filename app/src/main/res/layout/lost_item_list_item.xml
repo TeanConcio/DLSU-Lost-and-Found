@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ripple_default_white"
+            android:background="@drawable/bg_ripple_default_white"
             android:gravity="center|center_horizontal|center_vertical"
             android:orientation="horizontal"
             android:padding="12.5dp">
@@ -29,7 +29,7 @@
                 android:layout_height="75dp"
                 android:background="@color/green_200"
                 android:padding="2.5dp"
-                android:src="@drawable/the_goat"
+                android:src="@drawable/sample_the_goat"
                 app:shapeAppearanceOverlay="@style/RoundedSquare"
                 app:strokeColor="@color/green_500"
                 app:strokeWidth="2.5dp" />
