@@ -32,7 +32,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.found_item_list_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.list_item_found_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
