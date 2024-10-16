@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -33,7 +32,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.lost_item_list_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.list_item_lost_item,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
