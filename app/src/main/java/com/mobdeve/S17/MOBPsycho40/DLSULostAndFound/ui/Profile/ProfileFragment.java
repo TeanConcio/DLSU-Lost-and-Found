@@ -1,31 +1,58 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Profile;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.LoginActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
+    private SharedPreferences sharedPreferences;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textProfile;
-        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        sharedPreferences = getActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+
+        String idNumber = sharedPreferences.getString("idNumber", "Unknown ID");
+        String firstName = sharedPreferences.getString("firstName", "Unknown");
+        String lastName = sharedPreferences.getString("lastName", "User");
+
+        binding.txtUserId.setText("User ID: " + idNumber);
+        binding.txtFullName.setText(firstName + " " + lastName);
+
+        binding.sectionLogOut.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+
+            Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
         return root;
     }
 
