@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="325dp"
+    android:layout_height="wrap_content">
+
+    <!-- Text Input -->
+
+
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation= "horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:text="Campus "
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+        <Spinner
+            android:id="@+id/spinner_campus"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:dropDownWidth="200dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation= "horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="Location "
+            android:textSize="14sp"
+            tools:ignore="HardcodedText"/>
+
+        <EditText
+            android:id="@+id/input_item_location_filter"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="16dp"
+            android:textSize="14sp"
+            android:hint="Input Location"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation= "horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:text="Date "
+            android:textSize="14sp"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:id="@+id/input_date_range"
+            android:layout_width="205dp"
+            android:layout_height="48dp"
+            android:text="Select Date Range"
+            android:textSize="14sp"
+            android:padding="15dp"
+            android:background="?android:attr/selectableItemBackground"
+            tools:ignore="HardcodedText"/>
+
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_calendar"
+            app:tint="#808080"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_filteredSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Search"
+        android:textSize="12sp"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

@@ -1,14 +1,25 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -17,6 +28,10 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentLostBind
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class LostFragment extends Fragment {
 
@@ -27,6 +42,7 @@ public class LostFragment extends Fragment {
 
         binding = FragmentLostBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
 
 //        LostViewModel lostViewModel =
 //                new ViewModelProvider(this).get(LostViewModel.class);
@@ -59,6 +75,17 @@ public class LostFragment extends Fragment {
         LostItemAdapter lostItemAdapter = new LostItemAdapter(lostItemList, getActivity());
         binding.lostItemRecycler.setAdapter(lostItemAdapter);
 
+        // Filter Button
+        binding.lostFilterButton.setOnClickListener(v -> {
+            showSearchDialog();
+        });
+
+        //Add spinner
+
+
+
+
+
         return root;
     }
 
@@ -75,4 +102,71 @@ public class LostFragment extends Fragment {
         }
         return false;
     }
+
+
+    private void showSearchDialog() {
+        // Create a dialog instance
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog_search_filter);
+
+        Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
+
+        //Spinner
+        Spinner campusSpinner = dialog.findViewById(R.id.spinner_campus);
+        ArrayAdapter<CharSequence> adapterCampus = ArrayAdapter.createFromResource(
+                this.requireContext(),
+                R.array.campus,
+                android.R.layout.simple_spinner_item
+        );
+        adapterCampus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        campusSpinner.setAdapter(adapterCampus);
+
+        //Date Range Picker
+        TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
+        dateRangeTextView.setOnClickListener(v -> showDateRangePicker(dateRangeTextView));
+
+
+        //Dialog Position and Dim ammount
+        if (dialog.getWindow() != null) {
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.gravity = Gravity.TOP;
+            //dialog margin
+            params.x = -60;
+            params.y = 100;
+            params.dimAmount = 0;
+            dialog.getWindow().setAttributes(params);
+        }
+        dialog.show();
+    }
+
+    private void showDateRangePicker(final TextView date) {
+        MaterialDatePicker<Pair<Long, Long>> dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("Select Date Range")
+                .build();
+
+        // Show the date range picker
+        dateRangePicker.show(getParentFragmentManager(), "DATE_RANGE_PICKER");
+
+        // Handle the positive button click (when the date range is selected)
+        dateRangePicker.addOnPositiveButtonClickListener(selection -> {
+            if (selection != null) {
+                Long startDate = selection.first;
+                Long endDate = selection.second;
+
+                // Convert the start and end dates from milliseconds to a human-readable format
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                String formattedStartDate = simpleDateFormat.format(new Date(startDate));
+                String formattedEndDate = simpleDateFormat.format(new Date(endDate));
+
+                // Update the TextView with the selected start and end dates
+                date.setText(formattedStartDate + " - " + formattedEndDate);
+               // date.setText("Start: " + formattedStartDate + "\nEnd: " + formattedEndDate);
+            }
+        });
+    }
+
+
+
+
+
 }

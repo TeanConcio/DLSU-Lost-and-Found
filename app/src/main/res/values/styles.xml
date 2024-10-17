@@ -19,4 +19,13 @@
         <item name="cornerFamily">cut</item>
     </style>
 
+    <!-- Calendar Dialog Styles -->
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Change the header background color -->
+        <item name="colorAccent">@color/green_700</item>
+        <item name="android:buttonBarButtonStyle">@style/CustomDialogButton</item>
+    </style>
+    <style name="CustomDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

@@ -4,4 +4,13 @@
     <string name="title_found">Found</string>
     <string name="title_items">Items</string>
     <string name="title_profile">Profile</string>
+
+    <string-array name="campus">
+        <item>Manila</item>
+        <item>BGC</item>
+        <item>Laguna</item>
+        <item>Off-Campus</item>
+    </string-array>
+
+
 </resources>
