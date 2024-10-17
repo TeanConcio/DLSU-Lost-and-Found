@@ -14,8 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
+
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.AboutAppActivity;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ChangePasswordFormActivity;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.EditProfileActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.LoginActivity;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentProfileBinding;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Items.ItemsFragment;
 
 public class ProfileFragment extends Fragment {
 
@@ -41,6 +50,26 @@ public class ProfileFragment extends Fragment {
         binding.txtUserId.setText("User ID: " + idNumber);
         binding.txtFullName.setText(firstName + " " + lastName);
 
+        binding.sectionMyProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        binding.sectionMyRequests.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.navigation_profile, true)
+                    .build();
+
+            navController.navigate(R.id.navigation_items, null, navOptions);
+        });
+
+        binding.sectionChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangePasswordFormActivity.class);
+            startActivity(intent);
+        });
+
         binding.sectionLogOut.setOnClickListener(v -> {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
@@ -50,6 +79,11 @@ public class ProfileFragment extends Fragment {
 
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+        binding.sectionAboutApp.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AboutAppActivity.class);
             startActivity(intent);
         });
 
