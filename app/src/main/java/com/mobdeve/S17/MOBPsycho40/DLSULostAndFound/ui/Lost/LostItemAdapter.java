@@ -55,7 +55,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
                 Intent i = new Intent(context, ItemActivity.class);
                 i.putExtra("image",currentItem.getImage());
                 i.putExtra("name",currentItem.getName());
-                i.putExtra("category",currentItem.getCategory());
+                i.putExtra("category",currentItem.getCategory().getCategoryString());
                 i.putExtra("date",currentItem.getDateLost().format(dateTimeFormatter));
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());

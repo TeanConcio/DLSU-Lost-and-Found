@@ -54,7 +54,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
                 Intent i = new Intent(context, ItemActivity.class);
                 i.putExtra("image",currentItem.getImage());
                 i.putExtra("name",currentItem.getName());
-                i.putExtra("category",currentItem.getCategory());
+                i.putExtra("category",currentItem.getCategory().getCategoryString());
                 i.putExtra("date",currentItem.getDateFound().format(dateTimeFormatter));
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());

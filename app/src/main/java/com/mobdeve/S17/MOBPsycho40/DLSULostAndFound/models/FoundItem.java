@@ -1,18 +1,18 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class FoundItem extends Item {
 
-    private LocalDateTime dateFound;
+    private LocalDate dateFound;
 
     public FoundItem(String name,
-                     String category,
+                     Category category,
                      String description,
                      String campus,
                      String location,
                      Integer image,
-                     LocalDateTime dateFound) {
+                     LocalDate dateFound) {
         super(name,
                 ItemStatus.FOUND,
                 category,
@@ -30,6 +30,6 @@ public class FoundItem extends Item {
         Getters and Setters
     */
 
-    public LocalDateTime getDateFound() { return this.dateFound; }
-    public void setDateFound(LocalDateTime dateFound) { this.dateFound = dateFound; }
+    public LocalDate getDateFound() { return this.dateFound; }
+    public void setDateFound(LocalDate dateFound) { this.dateFound = dateFound; }
 }

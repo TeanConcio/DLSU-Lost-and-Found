@@ -1,24 +1,24 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Item {
 
     private String name;
     private ItemStatus status;
-    private String category;
+    private Category category;
     private String description;
     private String campus;
     private String location;
     private Integer image;
 
-    private LocalDateTime dateClaimed;
+    private LocalDate dateClaimed;
 
     public Item(String name,
                 ItemStatus status,
-                String category,
+                Category category,
                 String description,
                 String campus,
                 String location,
@@ -52,10 +52,10 @@ public abstract class Item {
         this.status = status;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return this.category;
     }
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -87,10 +87,10 @@ public abstract class Item {
         this.image = image;
     }
 
-    public LocalDateTime getDateClaimed() {
+    public LocalDate getDateClaimed() {
         return this.dateClaimed;
     }
-    public void setDateClaimed(LocalDateTime dateClaimed) {
+    public void setDateClaimed(LocalDate dateClaimed) {
         this.dateClaimed = dateClaimed;
     }
 }
