@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ItemActivity extends AppCompatActivity {
-    TextView itemName, itemCategory, itemLocation, itemDate, itemDescription;
+    TextView itemName, itemCategory, itemLocation, itemDate, itemDescription, itemCampus;
     ImageView itemImage;
 
     @Override
@@ -33,12 +33,14 @@ public class ItemActivity extends AppCompatActivity {
         itemLocation = findViewById(R.id.itemLocation);
         itemDate = findViewById(R.id.itemDate);
         itemDescription = findViewById(R.id.itemDescription);
+        itemCampus = findViewById(R.id.itemCampus);
 
         Intent i = getIntent();
         itemImage.setImageResource(i.getIntExtra("image",0));
         itemName.setText(i.getStringExtra("name"));
         itemCategory.setText(i.getStringExtra("category"));
-        itemLocation.setText(i.getStringExtra("campus"));
+        itemCampus.setText(i.getStringExtra("campus"));
+        itemLocation.setText(i.getStringExtra("location"));
         itemDate.setText(i.getStringExtra("date"));
         itemDescription.setText(i.getStringExtra("description"));
 
