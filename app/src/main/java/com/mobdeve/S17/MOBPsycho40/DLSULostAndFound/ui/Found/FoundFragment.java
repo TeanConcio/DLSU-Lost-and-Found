@@ -1,7 +1,10 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,10 +15,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,7 +31,6 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -36,6 +41,15 @@ public class FoundFragment extends Fragment {
 
     private FragmentFoundBinding binding;
 
+    private Drawable filterSelectedColor;
+    private Drawable filterUnselectedColor;
+
+    private LinearLayout categoryFilterView;
+    private Category selectedCategory = null;
+    private LinearLayout selectedCategoryView = null;
+
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -44,17 +58,17 @@ public class FoundFragment extends Fragment {
 
 //        FoundViewModel foundViewModel =
 //                new ViewModelProvider(this).get(FoundViewModel.class);
-
 //        final TextView textView = binding.textFound;
 //        foundViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        binding.foundFilter1.setOnTouchListener(this::onTouch);
+        filterSelectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_default_white);
+        filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_green_200);
 
-        // RecyclerView
-        binding.foundItemRecycler.setHasFixedSize(true);
-        binding.foundItemRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        // Make filters for each category in the scroll view
+        categoryFilterView = binding.foundFilterScroll;
+        this.makeCategoryFilters();
 
-        // RecyclerView Data
+        // Data
         FoundItem[] foundItemList = new FoundItem[]{
                 new FoundItem("Dominic \"THE GOAT\" Sia says that: According to all known laws of aviation, a bee isn't supposed to be able to fly", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Br. Andrew Hall wants to know your location right here right now", R.drawable.sample_the_goat, LocalDate.now()),
                 new FoundItem("iPhone 69 LIMITLESS", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
@@ -69,7 +83,9 @@ public class FoundFragment extends Fragment {
                 new FoundItem("Samsung Galaxy Fold", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
         };
 
-        // RecyclerView Adapter
+        // RecyclerView and Adapter
+        binding.foundItemRecycler.setHasFixedSize(true);
+        binding.foundItemRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         FoundItemAdapter foundItemAdapter = new FoundItemAdapter(foundItemList, getActivity());
         binding.foundItemRecycler.setAdapter(foundItemAdapter);
 
@@ -80,19 +96,105 @@ public class FoundFragment extends Fragment {
         return root;
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
-    public boolean onTouch(View v, MotionEvent event) {
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void makeCategoryFilters() {
+        // Create a filter button for the "All" category
+        LinearLayout allFilter = binding.allLostFilter;
+        allFilter.setOnClickListener(v -> onSelectFilter(v, null));
+        allFilter.setOnTouchListener(this::onTouch);
+
+        // Create a filter button for each category
+        for (Category category : Category.values()) {
+
+            // Create a LinearLayout
+            LinearLayout filter = new LinearLayout(getContext());
+            LinearLayout.LayoutParams filterParams = new LinearLayout.LayoutParams(
+                    convertPxToDp(75),
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            filter.setLayoutParams(filterParams);
+            filter.setBackground(filterUnselectedColor);
+            filter.setClickable(true);
+            filter.setGravity(Gravity.CENTER);
+            filter.setOrientation(LinearLayout.VERTICAL);
+            filter.setPadding(convertPxToDp(10), convertPxToDp(10), convertPxToDp(10), convertPxToDp(10));
+
+            // Create an ImageView`
+            ImageView imageView = new ImageView(getContext());
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    convertPxToDp(40),
+                    convertPxToDp(40)
+            );
+            imageParams.setMargins(convertPxToDp(2.5), 0, convertPxToDp(2.5), 0);
+            imageView.setLayoutParams(imageParams);
+            imageView.setImageResource(category.getIcon());
+
+            // Create a TextView
+            TextView textView = new TextView(getContext());
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            textView.setLayoutParams(textParams);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLines(2);
+            textView.setText(category.getString());
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.green_700));
+            textView.setTextSize(10);
+            textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+
+            // Add the image view and text view to the filter
+            filter.addView(imageView);
+            filter.addView(textView);
+
+            // Set an on click listener for the filter
+            filter.setOnClickListener(v -> onSelectFilter(v, category));
+
+            // Set an on touch listener for the filter
+            filter.setOnTouchListener(this::onTouch);
+
+            // Add the filter to the scroll view
+            categoryFilterView.addView(filter);
+        }
+
+        // Set the "All" category as the default selected category
+        selectedCategoryView = allFilter;
+        selectedCategoryView.setBackground(filterSelectedColor);
+    }
+
+
+    private void onSelectFilter(View v, Category category) {
+        if (selectedCategory != category) {
+            selectedCategory = category;
+            selectedCategoryView.setBackground(filterUnselectedColor);
+            selectedCategoryView = (LinearLayout) v;
+            selectedCategoryView.setBackground(filterSelectedColor);
+        }
+    }
+
+
+    private boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.filter_press);
             v.startAnimation(anim);
         }
         return false;
     }
+
+
+    private int convertPxToDp(double px) {
+        float scale = getResources().getDisplayMetrics().density;
+        return (int) (px * scale + 0.5f);
+    }
+
 
     private void showSearchDialog() {
         // Create a dialog instance
