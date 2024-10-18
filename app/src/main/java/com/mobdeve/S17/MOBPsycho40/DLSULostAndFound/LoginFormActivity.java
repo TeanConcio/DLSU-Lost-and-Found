@@ -46,6 +46,7 @@ public class LoginFormActivity extends AppCompatActivity {
                 editor.putString("idNumber", idNumber);
                 editor.putString("firstName", "Some");
                 editor.putString("lastName", "User");
+                editor.putString("email", "someuser@example.com");
                 editor.apply();
 
                 Intent intent = new Intent(LoginFormActivity.this, MainActivity.class);

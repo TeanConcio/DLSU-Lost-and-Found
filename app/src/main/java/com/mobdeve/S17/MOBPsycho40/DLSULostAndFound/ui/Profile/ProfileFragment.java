@@ -46,12 +46,17 @@ public class ProfileFragment extends Fragment {
         String idNumber = sharedPreferences.getString("idNumber", "Unknown ID");
         String firstName = sharedPreferences.getString("firstName", "Unknown");
         String lastName = sharedPreferences.getString("lastName", "User");
+        String email = sharedPreferences.getString("email", "Unknown email");
 
         binding.txtUserId.setText("User ID: " + idNumber);
         binding.txtFullName.setText(firstName + " " + lastName);
 
         binding.sectionMyProfile.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            intent.putExtra("idNumber", idNumber);
+            intent.putExtra("firstName", firstName);
+            intent.putExtra("lastName", lastName);
+            intent.putExtra("email", email);
             startActivity(intent);
         });
 
