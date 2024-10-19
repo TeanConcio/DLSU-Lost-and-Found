@@ -32,7 +32,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.list_item_lost_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.list_my_item_lost_item,parent,false);
         ItemsAdapter.ViewHolder viewHolder = new ItemsAdapter.ViewHolder(view);
         return viewHolder;
     }
