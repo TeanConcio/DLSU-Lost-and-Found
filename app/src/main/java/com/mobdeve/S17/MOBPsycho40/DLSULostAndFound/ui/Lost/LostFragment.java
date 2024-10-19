@@ -2,6 +2,7 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,6 +30,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.CreateLostActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentLostBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
@@ -97,6 +99,11 @@ public class LostFragment extends Fragment {
         // Filter Button
         binding.lostFilterButton.setOnClickListener(v -> {
             showSearchDialog();
+        });
+
+        binding.addLostItem.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CreateLostActivity.class);
+            startActivity(intent);
         });
 
         //Add spinner

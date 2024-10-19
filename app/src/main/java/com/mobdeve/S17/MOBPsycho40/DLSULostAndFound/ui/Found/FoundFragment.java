@@ -2,6 +2,7 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,6 +30,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.CreateFoundActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
@@ -99,10 +101,8 @@ public class FoundFragment extends Fragment {
         });
 
         binding.addFoundItem.setOnClickListener(v -> {
-            FoundCreateFragment foundCreateFragment = FoundCreateFragment.newInstance();
-
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-            navController.navigate(R.id.navigation_found_create);
+            Intent intent = new Intent(getActivity(), CreateFoundActivity.class);
+            startActivity(intent);
         });
 
         return root;

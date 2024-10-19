@@ -22,5 +22,12 @@
         <item>Z-A</item>
     </string-array>
 
+    <string-array name="category">
+        <item>Electronics</item>
+        <item>Accessories</item>
+        <item>Books</item>
+        <item>Others</item>
+    </string-array>
+
 
 </resources>
