@@ -12,6 +12,7 @@
     <color name="green_500">#6A9C89</color>
     <color name="green_200">#C4DAD2</color>
     <color name="default_white">#E9EFEC</color>
+    <color name="default_gray">#808080</color>
     <color name="dlsu_green">#26532B</color>
     <color name="transparent">#00000000</color>
 
