@@ -13,4 +13,12 @@
     </string-array>
 
 
+    <string-array name="sort_by">
+        <item>Newest Post</item>
+        <item>Oldest Post</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+    </string-array>
+
+
 </resources>

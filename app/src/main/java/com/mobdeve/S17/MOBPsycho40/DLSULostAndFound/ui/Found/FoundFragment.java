@@ -201,20 +201,31 @@ public class FoundFragment extends Fragment {
 
     private void showSearchDialog() {
         // Create a dialog instance
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(requireActivity());
         dialog.setContentView(R.layout.dialog_search_filter);
 
         Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
 
-        //Spinner
+        // Spinner for Campus
         Spinner campusSpinner = dialog.findViewById(R.id.spinner_campus);
         ArrayAdapter<CharSequence> adapterCampus = ArrayAdapter.createFromResource(
-                this.requireContext(),
+                requireContext(),
                 R.array.campus,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_item
         );
         adapterCampus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         campusSpinner.setAdapter(adapterCampus);
+
+        // Spinner for Sort By
+        Spinner sortBySpinner = dialog.findViewById(R.id.spinner_sort_by);
+        ArrayAdapter<CharSequence> adapterSortBy = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.sort_by,
+                R.layout.spinner_item
+        );
+        adapterSortBy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortBySpinner.setAdapter(adapterSortBy);
+
 
         //Date Range Picker
         TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
