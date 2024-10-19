@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:tint="@color/green_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_left_white_24dp" />
-
     <ImageView
         android:id="@+id/imageView15"
         android:layout_width="wrap_content"
@@ -103,5 +93,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:tint="@color/green_700"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_left_white_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
