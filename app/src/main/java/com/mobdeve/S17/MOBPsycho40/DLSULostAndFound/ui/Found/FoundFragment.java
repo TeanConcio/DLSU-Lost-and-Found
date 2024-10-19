@@ -24,6 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -93,6 +95,13 @@ public class FoundFragment extends Fragment {
 
         binding.foundFilterButton.setOnClickListener(v -> {
             showSearchDialog();
+        });
+
+        binding.addFoundItem.setOnClickListener(v -> {
+            FoundCreateFragment foundCreateFragment = FoundCreateFragment.newInstance();
+
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.navigation_found_create);
         });
 
         return root;
