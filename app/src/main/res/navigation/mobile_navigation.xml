@@ -28,4 +28,10 @@
         android:name="com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_found_create"
+        android:name="com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found.FoundCreateFragment"
+        android:label="Create Lost Item"
+        tools:layout="@layout/fragment_found_create" />
 </navigation>

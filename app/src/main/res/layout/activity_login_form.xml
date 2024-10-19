@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:labelFor="@id/input_id_number"
+                android:labelFor="@id/input_title"
                 android:text="DLSU ID Number" />
 
             <EditText

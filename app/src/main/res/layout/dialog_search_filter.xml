@@ -70,7 +70,7 @@
             tools:ignore="HardcodedText" />
 
         <EditText
-            android:id="@+id/input_item_location_filter"
+            android:id="@+id/input_title"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"

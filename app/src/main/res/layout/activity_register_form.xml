@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:labelFor="@id/input_id_number"
+                android:labelFor="@id/input_title"
                 android:text="DLSU ID Number" />
 
             <EditText
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:labelFor="@id/input_id_number"
+                android:labelFor="@id/input_title"
                 android:text="DLSU Email Address" />
 
             <EditText
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:layout_weight="1"
-                        android:labelFor="@id/input_id_number"
+                        android:labelFor="@id/input_title"
                         android:text="First Name" />
 
                     <EditText
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:layout_weight="1"
-                        android:labelFor="@id/input_id_number"
+                        android:labelFor="@id/input_title"
                         android:text="Last Name" />
 
                     <EditText
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_weight="1"
-                android:labelFor="@id/input_id_number"
+                android:labelFor="@id/input_title"
                 android:text="Password" />
 
             <EditText
