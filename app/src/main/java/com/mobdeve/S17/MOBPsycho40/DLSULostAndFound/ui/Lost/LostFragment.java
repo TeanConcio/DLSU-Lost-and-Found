@@ -1,7 +1,10 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,6 +15,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,26 +44,33 @@ public class LostFragment extends Fragment {
 
     private FragmentLostBinding binding;
 
+    private Drawable filterSelectedColor;
+    private Drawable filterUnselectedColor;
+
+    private LinearLayout categoryFilterView;
+    private Category selectedCategory = null;
+    private LinearLayout selectedCategoryView = null;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentLostBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
 //        LostViewModel lostViewModel =
 //                new ViewModelProvider(this).get(LostViewModel.class);
-
 //        final TextView textView = binding.textLost;
 //        lostViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        binding.lostFilter1.setOnTouchListener(this::onTouch);
+        filterSelectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_default_white);
+        filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.color.white);
 
-        // RecyclerView
-        binding.lostItemRecycler.setHasFixedSize(true);
-        binding.lostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Make filters for each category in the scroll view
+        categoryFilterView = binding.lostFilterScroll;
+        this.makeCategoryFilters();
 
-        // RecyclerView Data
+
+        // Data
         LostItem[] lostItemList = new LostItem[]{
                 new LostItem("Dominic \"THE GOAT\" Sia says that: According to all known laws of aviation, a bee isn't supposed to be able to fly", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Br. Andrew Hall wants to know your location right here right now", R.drawable.sample_the_goat, LocalDate.now()),
                 new LostItem("iPhone 69 LIMITLESS", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
@@ -72,7 +85,9 @@ public class LostFragment extends Fragment {
                 new LostItem("Samsung Galaxy Fold", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
         };
 
-        // RecyclerView Adapter
+        // RecyclerView  and Adapter
+        binding.lostItemRecycler.setHasFixedSize(true);
+        binding.lostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         LostItemAdapter lostItemAdapter = new LostItemAdapter(lostItemList, getActivity());
         binding.lostItemRecycler.setAdapter(lostItemAdapter);
 
@@ -96,6 +111,83 @@ public class LostFragment extends Fragment {
         binding = null;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void makeCategoryFilters() {
+        // Create a filter button for the "All" category
+        LinearLayout allFilter = binding.allLostFilter;
+        allFilter.setOnClickListener(v -> onSelectFilter(v, null));
+        allFilter.setOnTouchListener(this::onTouch);
+
+        // Create a filter button for each category
+        for (Category category : Category.values()) {
+
+            // Create a LinearLayout
+            LinearLayout filter = new LinearLayout(getContext());
+            LinearLayout.LayoutParams filterParams = new LinearLayout.LayoutParams(
+                    convertPxToDp(75),
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            filter.setLayoutParams(filterParams);
+            filter.setBackground(filterUnselectedColor);
+            filter.setClickable(true);
+            filter.setGravity(Gravity.CENTER);
+            filter.setOrientation(LinearLayout.VERTICAL);
+            filter.setPadding(convertPxToDp(10), convertPxToDp(10), convertPxToDp(10), convertPxToDp(10));
+
+            // Create an ImageView
+            ImageView imageView = new ImageView(getContext());
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    convertPxToDp(40),
+                    convertPxToDp(40)
+            );
+            imageParams.setMargins(convertPxToDp(2.5), 0, convertPxToDp(2.5), 0);
+            imageView.setLayoutParams(imageParams);
+            imageView.setImageResource(category.getIcon()); // Assuming category has an icon method
+            imageView.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.green_700));
+
+            // Create a TextView
+            TextView textView = new TextView(getContext());
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            textView.setLayoutParams(textParams);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLines(2);
+            textView.setText(category.getString()); // Assuming category has a string method
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.green_700));
+            textView.setTextSize(10);
+            textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+
+            // Add the image view and text view to the filter
+            filter.addView(imageView);
+            filter.addView(textView);
+
+            // Set an onClickListener for the filter
+            filter.setOnClickListener(v -> onSelectFilter(v, category));
+
+            // Set an onTouchListener for the filter
+            filter.setOnTouchListener(this::onTouch);
+
+            // Add the filter to the scroll view
+            binding.lostFilterScroll.addView(filter);
+        }
+
+        // Set the "All" category as the default selected category
+        selectedCategoryView = allFilter;
+        selectedCategoryView.setBackground(filterSelectedColor);
+    }
+
+    private void onSelectFilter(View v, Category category) {
+        if (selectedCategory != category) {
+            selectedCategory = category;
+            selectedCategoryView.setBackground(filterUnselectedColor);
+            selectedCategoryView = (LinearLayout) v;
+            selectedCategoryView.setBackground(filterSelectedColor);
+        }
+    }
+
+
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.filter_press);
@@ -104,6 +196,10 @@ public class LostFragment extends Fragment {
         return false;
     }
 
+    private int convertPxToDp(double px) {
+        float scale = getResources().getDisplayMetrics().density;
+        return (int) (px * scale + 0.5f);
+    }
 
     private void showSearchDialog() {
         // Create a dialog instance

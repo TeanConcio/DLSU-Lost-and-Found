@@ -7,6 +7,17 @@
     app:circularflow_defaultRadius="10dp"
     tools:context=".ui.Lost.LostFragment">
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/filterScrollView"
+        app:layout_constraintTop_toTopOf="@+id/filterScrollView"
+        app:layout_constraintVertical_bias="0.786" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addLostItem"
         android:layout_width="50dp"
@@ -48,9 +59,7 @@
             android:padding="5dp"
             android:queryHint="Search Lost Items"
             android:textColor="@color/green_700"
-            android:textSize="20sp">
-
-        </SearchView>
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/lostFilterButton"
@@ -69,261 +78,51 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/lostFilterScroll"
+        android:id="@+id/filterScrollView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@color/green_200"
+        android:background="@color/white"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lostSearchBar">
 
         <LinearLayout
+            android:id="@+id/lostFilterScroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Filter Items -->
             <LinearLayout
-                android:id="@+id/lostFilter0"
+                android:id="@+id/allLostFilter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:drawable/btn_default"
-                android:backgroundTint="@color/green_200"
+                android:background="@drawable/bg_ripple_default_white"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="5dp">
 
                 <ImageView
-                    android:id="@+id/imageView0"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:src="@drawable/ic_all"
+                    android:tint="@color/green_700" />
 
                 <TextView
-                    android:id="@+id/textView0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:breakStrategy="simple"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="All"
                     android:textColor="@color/green_700"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lostFilter1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_green_200"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/sample_the_goat" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:text="THE GOAT"
-                    android:textColor="@color/green_700"
-                    android:textSize="12sp" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -331,14 +130,13 @@
         android:id="@+id/lostItemRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingBottom="100dp"
         android:clipToPadding="false"
+        android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/lostFilterScroll"
+        app:layout_constraintStart_toEndOf="@+id/filterScrollView"
         app:layout_constraintTop_toBottomOf="@+id/lostSearchBar"
-        app:layout_constraintVertical_bias="0.0"
-        app:tint="@null" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
