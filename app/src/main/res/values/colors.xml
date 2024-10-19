@@ -15,5 +15,13 @@
     <color name="dlsu_green">#26532B</color>
     <color name="transparent">#00000000</color>
 
+    <color name="red_700">#752929</color>
+    <color name="red_200">#fd9096</color>
+
+    <color name="yellow_700">#98824a</color>
+    <color name="yellow_200">#fbf1e7</color>
+
+
+
 
 </resources>

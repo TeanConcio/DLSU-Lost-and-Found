@@ -54,7 +54,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 Intent i = new Intent(context, ItemActivity.class);
                 i.putExtra("image",currentItem.getImage());
                 i.putExtra("name",currentItem.getName());
-                i.putExtra("category",currentItem.getCategory());
+                i.putExtra("status",currentItem.getStatus().getString());
+                i.putExtra("category",currentItem.getCategory().getString());
                 i.putExtra("date",currentItem.getDateLost().format(dateTimeFormatter));
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());
