@@ -2,6 +2,7 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,6 +30,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.CreateLostActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentLostBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
@@ -72,17 +74,20 @@ public class LostFragment extends Fragment {
 
         // Data
         LostItem[] lostItemList = new LostItem[]{
-                new LostItem("Dominic \"THE GOAT\" Sia says that: According to all known laws of aviation, a bee isn't supposed to be able to fly", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Br. Andrew Hall wants to know your location right here right now", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("iPhone 69 LIMITLESS", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
-                new LostItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, LocalDate.now()),
-                new LostItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, LocalDate.now()),
+
                 new LostItem("iPad Pro 2021", Category.ELECTRONICS, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, LocalDate.now()),
-                new LostItem("Samsung Galaxy S21", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("Samsung Galaxy Buds", Category.ELECTRONICS, "It is the earbuds owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("Samsung Galaxy Tab", Category.ELECTRONICS, "It is the tablet owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("Samsung Galaxy Watch", Category.ELECTRONICS, "It is the watch owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("Samsung Galaxy Book", Category.ELECTRONICS, "It is the laptop owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("Samsung Galaxy Fold", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
+                new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, LocalDate.now()),
+                new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, LocalDate.now()),
+                new LostItem("Mathematics Notebook", Category.STATIONERIES, "A spiral-bound notebook with 'Math 101' written on the cover. Contains detailed notes.", "Laguna", "Found under a desk in the lecture hall", R.drawable.sample_math_notebook, LocalDate.now()),
+                new LostItem("Blue Water Bottle", Category.ESSENTIALS, "A stainless steel blue water bottle. No visible brand. Slight dent on the side.", "Off-Campus", "Found near the basketball court", R.drawable.sample_blue_bottle, LocalDate.now()),
+                new LostItem("iPhone 16 Pro Max", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
+                new LostItem("Running Shoes", Category.SPORTS_EQUIPMENT, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, LocalDate.now()),
+                new LostItem("Physics Textbook", Category.BOOKS, "A hardcover Physics textbook, 'Fundamentals of Physics'. Owner's name is inside: 'Sarah'.", "Laguna", "Found on a study table in the student center", R.drawable.sample_physics_textbook, LocalDate.now()),
+                new LostItem("Umbrella", Category.OTHER_ITEMS, "A small black foldable umbrella with a red handle.", "BGC", "Left in the restroom", R.drawable.sample_umbrella, LocalDate.now()),
+                new LostItem("Glasses Case", Category.ACCESSORIES, "A black hard-shell glasses case. Contains prescription glasses.", "Off-Campus", "Found at the reception counter of a coffee shop", R.drawable.sample_glasses_case, LocalDate.now()),
+                new LostItem("Brown Leather Belt", Category.ACCESSORIES, "A brown leather belt with a silver buckle. Slightly worn but in good condition.", "Manila", "Found hanging on a chair in the cafeteria", R.drawable.sample_brown_leather_belt, LocalDate.now()),
+                new LostItem("Canvas Tote Bag", Category.CONTAINERS, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, LocalDate.now()),
+
         };
 
         // RecyclerView  and Adapter
@@ -94,6 +99,11 @@ public class LostFragment extends Fragment {
         // Filter Button
         binding.lostFilterButton.setOnClickListener(v -> {
             showSearchDialog();
+        });
+
+        binding.addLostItem.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), CreateLostActivity.class);
+            startActivity(intent);
         });
 
         //Add spinner

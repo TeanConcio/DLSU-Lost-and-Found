@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".CreateFoundActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -110,7 +113,7 @@
                         android:textStyle="bold" />
 
                     <Spinner
-                        android:id="@+id/spinner_campus3"
+                        android:id="@+id/spinner_category"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_weight="1"
@@ -203,8 +206,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="40dp"
-                        android:text="Date "
+                        android:text="Date Found"
                         android:textColor="@color/green_700"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -255,9 +257,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:gravity="start|top"
-                        android:hint="Enter Description"
+                        android:hint="Enter description"
                         android:inputType="textMultiLine"
-                        android:lines="3"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -277,4 +278,5 @@
                 app:cornerRadius="10dp" />
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,11 +30,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.CreateFoundActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -73,17 +76,17 @@ public class FoundFragment extends Fragment {
 
         // Data
         FoundItem[] foundItemList = new FoundItem[]{
-                new FoundItem("Dominic \"THE GOAT\" Sia says that: According to all known laws of aviation, a bee isn't supposed to be able to fly", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Br. Andrew Hall wants to know your location right here right now", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("iPhone 69 LIMITLESS", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
+                new FoundItem("Gray Beanie", Category.CLOTHES, "A gray wool beanie. It's slightly stretched but still in good condition.", "BGC", "Found in the outdoor seating area near the café", R.drawable.sample_gray_beanie, LocalDate.now()),
+                new FoundItem("Keychain with Multiple Keys", Category.ESSENTIALS, "A set of house and car keys on a DLSU keychain. One of the keys has a red sticker.", "Manila", "Found in the parking lot", R.drawable.sample_keychain_with_keys, LocalDate.now()),
+                new FoundItem("Thermos Flask", Category.ESSENTIALS, "A silver thermos flask with a black lid. Has a few scratches on the surface.", "Laguna", "Found on a bench near the garden", R.drawable.sample_thermos_flask, LocalDate.now()),
+                new FoundItem("Sketchbook", Category.BOOKS, "A black hardcover sketchbook with several drawings inside. Owner's name is 'Anna'.", "Off-Campus", "Left in a coffee shop", R.drawable.sample_sketch_book, LocalDate.now()),
+                new FoundItem("Red Scarf", Category.CLOTHES, "A red scarf with a checkered pattern. It's made of soft wool.", "Manila", "Found in the library study area", R.drawable.sample_red_scarf, LocalDate.now()),
+                new FoundItem("Basketball", Category.SPORTS_EQUIPMENT, "A well-used Spalding basketball. Slightly deflated.", "Laguna", "Found on the basketball court", R.drawable.sample_basketball, LocalDate.now()),
+                new FoundItem("Sunglasses", Category.ACCESSORIES, "A pair of black Ray-Ban sunglasses in a brown leather case.", "BGC", "Found near the gym entrance", R.drawable.sample_sunglasses, LocalDate.now()),
+                new FoundItem("Pen Set", Category.STATIONERIES, "A black and gold pen set inside a velvet box. Looks new and unused.", "Manila", "Found in a classroom", R.drawable.sample_pen_set, LocalDate.now()),
+                new FoundItem("Yoga Mat", Category.SPORTS_EQUIPMENT, "A purple yoga mat rolled up with a strap. Slightly worn.", "Off-Campus", "Found in a fitness center locker room", R.drawable.sample_yoga_mat, LocalDate.now()),
                 new FoundItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, LocalDate.now()),
-                new FoundItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, LocalDate.now()),
-                new FoundItem("iPad Pro 2021", Category.ELECTRONICS, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, LocalDate.now()),
-                new FoundItem("Samsung Galaxy S21", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("Samsung Galaxy Buds", Category.ELECTRONICS, "It is the earbuds owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("Samsung Galaxy Tab", Category.ELECTRONICS, "It is the tablet owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("Samsung Galaxy Watch", Category.ELECTRONICS, "It is the watch owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("Samsung Galaxy Book", Category.ELECTRONICS, "It is the laptop owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
-                new FoundItem("Samsung Galaxy Fold", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
+                new FoundItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, LocalDate.now())
         };
         foundItemList[0].setStatus(ItemStatus.CLAIMED);
 
@@ -98,10 +101,8 @@ public class FoundFragment extends Fragment {
         });
 
         binding.addFoundItem.setOnClickListener(v -> {
-            FoundCreateFragment foundCreateFragment = FoundCreateFragment.newInstance();
-
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-            navController.navigate(R.id.navigation_found_create);
+            Intent intent = new Intent(getActivity(), CreateFoundActivity.class);
+            startActivity(intent);
         });
 
         return root;
