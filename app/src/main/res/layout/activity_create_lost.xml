@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="50dp"
-            android:paddingBottom="100dp"
+            android:paddingBottom="500dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -253,7 +253,7 @@
                     </LinearLayout>
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine"
+                        android:id="@+id/input_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
