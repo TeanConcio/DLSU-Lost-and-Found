@@ -63,7 +63,7 @@ public class FoundFragment extends Fragment {
 //        foundViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         filterSelectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_default_white);
-        filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_green_200);
+        filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.color.white);
 
         // Make filters for each category in the scroll view
         categoryFilterView = binding.foundFilterScroll;
@@ -138,6 +138,7 @@ public class FoundFragment extends Fragment {
             imageParams.setMargins(convertPxToDp(2.5), 0, convertPxToDp(2.5), 0);
             imageView.setLayoutParams(imageParams);
             imageView.setImageResource(category.getIcon());
+            imageView.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.green_700));
 
             // Create a TextView
             TextView textView = new TextView(getContext());
