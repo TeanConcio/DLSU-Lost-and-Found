@@ -38,7 +38,11 @@ public class RegisterFormActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnRegister.setOnClickListener(v -> {
-            handleRegistration();
+            if(handleRegistration()) {
+                startActivity(new Intent(this, LoginFormActivity.class));
+                finish();
+            }
+
         });
 
         binding.linkLoginForm.setOnClickListener(v -> {
@@ -47,7 +51,8 @@ public class RegisterFormActivity extends AppCompatActivity {
         });
     }
 
-    private void handleRegistration() {
+    private boolean handleRegistration() {
         // Add your registration logic here (validation, form submission)
+        return true;
     }
 }
