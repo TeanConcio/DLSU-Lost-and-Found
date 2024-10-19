@@ -7,17 +7,6 @@
     app:circularflow_defaultRadius="10dp"
     tools:context=".ui.Lost.LostFragment">
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/filterScrollView"
-        app:layout_constraintTop_toTopOf="@+id/filterScrollView"
-        app:layout_constraintVertical_bias="0.786" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addLostItem"
         android:layout_width="50dp"
@@ -59,7 +48,9 @@
             android:padding="5dp"
             android:queryHint="Search Lost Items"
             android:textColor="@color/green_700"
-            android:textSize="20sp" />
+            android:textSize="20sp">
+
+        </SearchView>
 
         <ImageButton
             android:id="@+id/lostFilterButton"
@@ -77,15 +68,54 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/lostItemsTitleContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lostSearchBar">
+
+        <TextView
+            android:id="@+id/lostItemsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans_black"
+            android:text="Lost Items"
+            android:textColor="@color/green_700"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lostItemsDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="1dp"
+            android:fontFamily="@font/dm_sans_black"
+            android:lines="1"
+            android:text="Reported items lost by Lasallians"
+            android:textColor="@color/material_dynamic_neutral50"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/filterScrollView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@color/white"
-        android:padding="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lostSearchBar">
+        app:layout_constraintTop_toBottomOf="@+id/lostItemsTitleContainer">
 
         <LinearLayout
             android:id="@+id/lostFilterScroll"
@@ -93,7 +123,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Filter Items -->
             <LinearLayout
                 android:id="@+id/allLostFilter"
                 android:layout_width="match_parent"
@@ -102,6 +131,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:layout_marginTop="9dp"
                 android:padding="5dp">
 
                 <ImageView
@@ -134,9 +164,25 @@
         android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toBottomOf="@+id/lostItemsTitleContainer" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="117dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/filterScrollView"
         app:layout_constraintStart_toEndOf="@+id/filterScrollView"
-        app:layout_constraintTop_toBottomOf="@+id/lostSearchBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/lostItemsTitleContainer" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/lostItemsTitleContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
