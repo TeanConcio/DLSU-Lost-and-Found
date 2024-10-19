@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentItemsBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost.LostItemAdapter;
@@ -43,11 +44,10 @@ public class ItemsFragment extends Fragment {
         binding.myLostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         LostItem[] lostItemList = new LostItem[]{
-                new LostItem("Dominic \"THE GOAT\" Sia says that: According to all known laws of aviation, a bee isn't supposed to be able to fly", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Br. Andrew Hall wants to know your location right here right now", R.drawable.sample_the_goat, LocalDate.now()),
-                new LostItem("iPhone 69 LIMITLESS", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, LocalDate.now()),
-                new LostItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, LocalDate.now()),
+                new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, LocalDate.now()),
+                new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, LocalDate.now()),
+                new LostItem("Running Shoes", Category.SPORTS_EQUIPMENT, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, LocalDate.now())
         };
-
 
         lostItemList[2].setStatus(ItemStatus.CLAIMED);
 
