@@ -17,7 +17,7 @@ public class ItemActivity extends AppCompatActivity {
     TextView itemName, itemCategory, itemLocation, itemDate, itemDescription, itemCampus, itemStatus;
     ImageView itemImage;
 
-    Button btn_claim_item;
+    Button btn_claim_item, btn_update_item;
 
     CardView itemStatusCard;
 
@@ -43,6 +43,7 @@ public class ItemActivity extends AppCompatActivity {
         itemCampus = findViewById(R.id.itemCampus);
         itemStatusCard = findViewById(R.id.itemStatusCard);
         btn_claim_item = findViewById(R.id.btn_claim_item);
+        btn_update_item = findViewById(R.id.btn_update_item);
 
         Intent i = getIntent();
         itemImage.setImageResource(i.getIntExtra("image",0));
@@ -67,13 +68,19 @@ public class ItemActivity extends AppCompatActivity {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
             btn_claim_item.setVisibility(Button.GONE);
-
         }
 
-
-
-
-
-
+        btn_update_item.setOnClickListener(v -> {
+            Intent intent = new Intent(ItemActivity.this, UpdateFoundActivity.class);
+            intent.putExtra("image",i.getIntExtra("image",0));
+            intent.putExtra("name",i.getStringExtra("name"));
+            intent.putExtra("status",i.getStringExtra("status"));
+            intent.putExtra("category",i.getStringExtra("category"));
+            intent.putExtra("date",i.getStringExtra("date"));
+            intent.putExtra("campus", i.getStringExtra("campus"));
+            intent.putExtra("location",i.getStringExtra("location"));
+            intent.putExtra("description", i.getStringExtra("description"));
+            startActivity(intent);
+        });
     }
 }

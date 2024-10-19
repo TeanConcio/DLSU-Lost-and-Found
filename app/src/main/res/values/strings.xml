@@ -29,5 +29,10 @@
         <item>Others</item>
     </string-array>
 
+    <string-array name="status">
+        <item>Lost</item>
+        <item>Found</item>
+    </string-array>
+
 
 </resources>
