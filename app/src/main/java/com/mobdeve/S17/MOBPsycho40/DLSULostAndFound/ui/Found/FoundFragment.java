@@ -31,6 +31,7 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -82,6 +83,7 @@ public class FoundFragment extends Fragment {
                 new FoundItem("Samsung Galaxy Book", Category.ELECTRONICS, "It is the laptop owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
                 new FoundItem("Samsung Galaxy Fold", Category.ELECTRONICS, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_the_goat, LocalDate.now()),
         };
+        foundItemList[0].setStatus(ItemStatus.CLAIMED);
 
         // RecyclerView and Adapter
         binding.foundItemRecycler.setHasFixedSize(true);
@@ -220,6 +222,7 @@ public class FoundFragment extends Fragment {
 
         //Dialog Position and Dim ammount
         if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP;
             //dialog margin

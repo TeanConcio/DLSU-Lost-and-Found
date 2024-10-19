@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ItemActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.format.DateTimeFormatter;
@@ -45,7 +47,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         holder.lostItemDate.setText(currentItem.getDateLost().format(dateTimeFormatter));
         holder.lostItemLocation.setText(currentItem.getLocation());
-        holder.lostItemDescription.setText(currentItem.getDescription());
+        holder.itemStatus.setText(currentItem.getStatus().getString());
+
+        if (currentItem.getStatus() == ItemStatus.LOST) {
+            holder.itemStatusCard.setCardBackgroundColor(context.getResources().getColor(R.color.red_200));
+            holder.itemStatus.setTextColor(context.getResources().getColor(R.color.red_700));
+        } else {
+            holder.itemStatusCard.setCardBackgroundColor(context.getResources().getColor(R.color.yellow_200));
+            holder.itemStatus.setTextColor(context.getResources().getColor(R.color.yellow_700));
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +86,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         TextView lostItemName;
         TextView lostItemDate;
         TextView lostItemLocation;
-        TextView lostItemDescription;
+        TextView itemStatus;
+        CardView itemStatusCard;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,7 +97,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             lostItemName = itemView.findViewById(R.id.lostItemName);
             lostItemDate = itemView.findViewById(R.id.lostItemDate);
             lostItemLocation = itemView.findViewById(R.id.lostItemLocation);
-            lostItemDescription = itemView.findViewById(R.id.lostItemDescription);
+            itemStatus = itemView.findViewById(R.id.itemStatus);
+            itemStatusCard = itemView.findViewById(R.id.itemStatusCard);
+
         }
     }
 

@@ -56,14 +56,18 @@ public class ItemActivity extends AppCompatActivity {
 
 
         if (itemStatus.getText().toString().equals("Lost")){
-            itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
-            itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
+            itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.red_200));
+            itemStatus.setTextColor(getResources().getColor(R.color.red_700));
             btn_claim_item.setVisibility(Button.GONE);
-
         }
         else if (itemStatus.getText().toString().equals("Found")){
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.green_200));
             itemStatus.setTextColor(getResources().getColor(R.color.green_700));
+        } else{
+            itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
+            itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
+            btn_claim_item.setVisibility(Button.GONE);
+
         }
 
 

@@ -129,6 +129,7 @@ public class LostFragment extends Fragment {
 
         //Dialog Position and Dim ammount
         if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.gravity = Gravity.TOP;
             //dialog margin
