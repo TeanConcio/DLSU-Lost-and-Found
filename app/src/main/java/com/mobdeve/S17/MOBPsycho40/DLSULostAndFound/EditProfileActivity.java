@@ -75,6 +75,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveProfileChanges() {
+        binding.btnSave.setEnabled(false);
+        binding.btnSave.setText("Saving Changes...");
+
         String newFirstName = binding.inputFirstName.getText().toString().trim();
         String newLastName = binding.inputLastName.getText().toString().trim();
 
@@ -99,5 +102,12 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
         }
+
+        resetSaveButton();
+    }
+
+    private void resetSaveButton() {
+        binding.btnSave.setEnabled(true);
+        binding.btnSave.setText("Save Changes");
     }
 }
