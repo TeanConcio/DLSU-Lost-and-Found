@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.EditProfileActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.LoginActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentProfileBinding;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Items.ItemsFragment;
 
 public class ProfileFragment extends Fragment {
 
@@ -46,20 +44,15 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         sharedPreferences = getActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
 
-        String idNumber = sharedPreferences.getString("idNumber", "Unknown ID");
-        String firstName = sharedPreferences.getString("firstName", "Unknown");
-        String lastName = sharedPreferences.getString("lastName", "User");
-        String email = sharedPreferences.getString("email", "Unknown email");
-
-        binding.txtUserId.setText("User ID: " + idNumber);
-        binding.txtFullName.setText(firstName + " " + lastName);
+        // Load initial data
+        loadProfileData();
 
         binding.sectionMyProfile.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            intent.putExtra("idNumber", idNumber);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("email", email);
+            intent.putExtra("idNumber", sharedPreferences.getString("idNumber", "Unknown ID"));
+            intent.putExtra("firstName", sharedPreferences.getString("firstName", "Unknown"));
+            intent.putExtra("lastName", sharedPreferences.getString("lastName", "User"));
+            intent.putExtra("email", sharedPreferences.getString("email", "Unknown email"));
             startActivity(intent);
         });
 
@@ -98,6 +91,22 @@ public class ProfileFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Refresh profile data when the fragment becomes visible again
+        loadProfileData();
+    }
+
+    private void loadProfileData() {
+        String idNumber = sharedPreferences.getString("idNumber", "Unknown ID");
+        String firstName = sharedPreferences.getString("firstName", "Unknown");
+        String lastName = sharedPreferences.getString("lastName", "User");
+
+        binding.txtUserId.setText("User ID: " + idNumber);
+        binding.txtFullName.setText(firstName + " " + lastName);
     }
 
     @Override
