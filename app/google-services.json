@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "642778962820",
+    "firebase_url": "https://itemo-e5207-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "itemo-e5207",
+    "storage_bucket": "itemo-e5207.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642778962820:android:507d230a2d9639128adbd1",
+        "android_client_info": {
+          "package_name": "com.mobdeve.S17.MOBPsycho40.DLSULostAndFound"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFh86CVu2WDW3V2K2v8fEduD2HIlmJo90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

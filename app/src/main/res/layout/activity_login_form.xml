@@ -63,16 +63,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:labelFor="@id/input_title"
-                android:text="DLSU ID Number" />
+                android:labelFor="@id/input_email"
+                android:text="DLSU Email" />
 
             <EditText
-                android:id="@+id/input_id_number"
+                android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:fontFamily="@font/dm_sans"
-                android:hint="What's your ID number?"
+                android:hint="What's your DLSU email?"
                 android:inputType="text" />
 
             <TextView

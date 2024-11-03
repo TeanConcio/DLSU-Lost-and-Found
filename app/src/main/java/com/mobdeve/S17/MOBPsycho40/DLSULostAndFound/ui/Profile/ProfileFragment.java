@@ -18,6 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.AboutAppActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ChangePasswordFormActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.EditProfileActivity;
@@ -30,6 +31,7 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,6 +43,7 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        mAuth = FirebaseAuth.getInstance();
         sharedPreferences = getActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
 
         String idNumber = sharedPreferences.getString("idNumber", "Unknown ID");
@@ -79,6 +82,8 @@ public class ProfileFragment extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.apply();
+
+            mAuth.signOut();
 
             Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
 

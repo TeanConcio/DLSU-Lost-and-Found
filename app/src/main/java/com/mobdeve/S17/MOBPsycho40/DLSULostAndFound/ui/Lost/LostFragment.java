@@ -106,12 +106,6 @@ public class LostFragment extends Fragment {
             startActivity(intent);
         });
 
-        //Add spinner
-
-
-
-
-
         return root;
     }
 
