@@ -1,5 +1,7 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +23,8 @@ public class ItemActivity extends AppCompatActivity {
 
     CardView itemStatusCard;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,7 @@ public class ItemActivity extends AppCompatActivity {
             return insets;
         });
 
+        sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
 
         itemImage = findViewById(R.id.itemImage);
         itemName = findViewById(R.id.itemName);
@@ -45,6 +50,11 @@ public class ItemActivity extends AppCompatActivity {
         btn_claim_item = findViewById(R.id.btn_claim_item);
         btn_update_item = findViewById(R.id.btn_update_item);
 
+        if (!sharedPreferences.getBoolean("isLoggedIn", false)){
+            btn_update_item.setVisibility(Button.GONE);
+            btn_claim_item.setVisibility(Button.GONE);
+        }
+
         Intent i = getIntent();
         itemImage.setImageResource(i.getIntExtra("image",0));
         itemName.setText(i.getStringExtra("name"));
@@ -55,7 +65,6 @@ public class ItemActivity extends AppCompatActivity {
         itemDate.setText(i.getStringExtra("date"));
         itemDescription.setText(i.getStringExtra("description"));
 
-
         if (itemStatus.getText().toString().equals("Lost")){
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.red_200));
             itemStatus.setTextColor(getResources().getColor(R.color.red_700));
@@ -64,10 +73,18 @@ public class ItemActivity extends AppCompatActivity {
         else if (itemStatus.getText().toString().equals("Found")){
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.green_200));
             itemStatus.setTextColor(getResources().getColor(R.color.green_700));
+
+            if (!sharedPreferences.getBoolean("isAdmin", false)) {
+                btn_update_item.setVisibility(Button.GONE);
+            }else{
+                btn_claim_item.setVisibility(Button.VISIBLE);
+            }
+            
         } else{
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
             btn_claim_item.setVisibility(Button.GONE);
+            btn_update_item.setVisibility(Button.GONE);
         }
 
         btn_update_item.setOnClickListener(v -> {

@@ -237,7 +237,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="Mark As Claimed"
+                        android:text="Claim Item"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
