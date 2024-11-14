@@ -2,7 +2,9 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -52,9 +54,12 @@ public class LostFragment extends Fragment {
     private LinearLayout categoryFilterView;
     private Category selectedCategory = null;
     private LinearLayout selectedCategoryView = null;
+    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        sharedPreferences = getActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
 
         binding = FragmentLostBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -89,6 +94,10 @@ public class LostFragment extends Fragment {
                 new LostItem("Canvas Tote Bag", Category.CONTAINERS, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, LocalDate.now()),
 
         };
+
+        if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
+            binding.addLostItem.setVisibility(View.GONE);
+        }
 
         // RecyclerView  and Adapter
         binding.lostItemRecycler.setHasFixedSize(true);

@@ -2,7 +2,9 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -54,10 +56,14 @@ public class FoundFragment extends Fragment {
     private Category selectedCategory = null;
     private LinearLayout selectedCategoryView = null;
 
+    private SharedPreferences sharedPreferences;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        sharedPreferences = getActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
 
         binding = FragmentFoundBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -90,6 +96,14 @@ public class FoundFragment extends Fragment {
         };
         foundItemList[0].setStatus(ItemStatus.CLAIMED);
 
+        if (!sharedPreferences.getBoolean("isAdmin", false)) {
+            binding.addFoundItem.setVisibility(View.GONE);
+        }
+
+        if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
+            binding.addFoundItem.setVisibility(View.GONE);
+        }
+        
         // RecyclerView and Adapter
         binding.foundItemRecycler.setHasFixedSize(true);
         binding.foundItemRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
