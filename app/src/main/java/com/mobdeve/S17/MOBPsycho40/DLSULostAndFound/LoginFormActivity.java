@@ -85,6 +85,7 @@ public class LoginFormActivity extends AppCompatActivity {
                                         String firstName = userTask.getResult().child("firstName").getValue(String.class);
                                         String lastName = userTask.getResult().child("lastName").getValue(String.class);
                                         String email = userTask.getResult().child("email").getValue(String.class);
+                                        Boolean isAdmin = userTask.getResult().child("isAdmin").getValue(Boolean.class);
 
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putBoolean("isLoggedIn", true);
@@ -92,6 +93,9 @@ public class LoginFormActivity extends AppCompatActivity {
                                         editor.putString("firstName", firstName);
                                         editor.putString("lastName", lastName);
                                         editor.putString("email", email);
+                                        editor.putBoolean("isAdmin", Boolean.TRUE.equals(isAdmin));
+
+
                                         editor.apply();
 
                                         Toast.makeText(LoginFormActivity.this, "Login successful", Toast.LENGTH_SHORT).show();

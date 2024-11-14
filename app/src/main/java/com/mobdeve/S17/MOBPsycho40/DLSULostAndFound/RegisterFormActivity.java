@@ -102,7 +102,7 @@ public class RegisterFormActivity extends AppCompatActivity {
 
                             if (user != null) {
                                 String userId = user.getUid();
-                                User userData = new User(idNumber, firstName, lastName, email);
+                                User userData = new User(idNumber, firstName, lastName, email, false);
 
                                 reference.child(userId).setValue(userData)
                                     .addOnCompleteListener(saveTask -> {
@@ -141,14 +141,16 @@ public class RegisterFormActivity extends AppCompatActivity {
         public String firstName;
         public String lastName;
         public String email;
+        public boolean isAdmin;
 
         public User() {}
 
-        public User(String idNumber, String firstName, String lastName, String email) {
+        public User(String idNumber, String firstName, String lastName, String email , boolean isAdmin) {
             this.idNumber = idNumber;
             this.firstName = firstName;
             this.lastName = lastName;
             this.email = email;
+            this.isAdmin = isAdmin;
         }
     }
 }
