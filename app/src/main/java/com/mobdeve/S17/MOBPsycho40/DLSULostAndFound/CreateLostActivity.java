@@ -75,13 +75,14 @@ public class CreateLostActivity extends AppCompatActivity {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    getApplicationContext(),
+                    this,
                     R.style.CustomDatePickerDialog,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
                         String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
                         inputDate.setText(date);
                     },
-                    year, month, day);
+                    year, month, day
+            );
 
             datePickerDialog.show();
         });
