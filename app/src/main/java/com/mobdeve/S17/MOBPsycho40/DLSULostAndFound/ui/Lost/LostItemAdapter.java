@@ -43,8 +43,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
 
         holder.lostItemImage.setImageResource(currentItem.getImage());
         holder.lostItemName.setText(currentItem.getName());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        holder.lostItemDate.setText(currentItem.getDateLost().format(dateTimeFormatter));
+        holder.lostItemDate.setText(currentItem.getDateLost());
         holder.lostItemLocation.setText(currentItem.getLocation());
         holder.lostItemDescription.setText(currentItem.getDescription());
 
@@ -57,7 +56,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
                 i.putExtra("name",currentItem.getName());
                 i.putExtra("status",currentItem.getStatus().getString());
                 i.putExtra("category",currentItem.getCategory().getString());
-                i.putExtra("date",currentItem.getDateLost().format(dateTimeFormatter));
+                i.putExtra("date",currentItem.getDateLost());
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());
                 i.putExtra("description", currentItem.getDescription());

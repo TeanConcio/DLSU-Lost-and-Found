@@ -1,5 +1,6 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Items;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,9 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost.LostItemAdapter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class ItemsFragment extends Fragment {
 
@@ -43,12 +45,13 @@ public class ItemsFragment extends Fragment {
         binding.myLostItemRecycler.setHasFixedSize(true);
         binding.myLostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        LostItem[] lostItemList = new LostItem[]{
-                new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, LocalDate.now()),
-                new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, LocalDate.now()),
-                new LostItem("Running Shoes", Category.SPORTS_EQUIPMENT, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, LocalDate.now())
-        };
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
+        LostItem[] lostItemList = new LostItem[]{
+                new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
+                new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
+                new LostItem("Running Shoes", Category.SPORTS_EQUIPMENT, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, formatter.format(new Date()))
+        };
         lostItemList[2].setStatus(ItemStatus.CLAIMED);
 
         // RecyclerView Adapter

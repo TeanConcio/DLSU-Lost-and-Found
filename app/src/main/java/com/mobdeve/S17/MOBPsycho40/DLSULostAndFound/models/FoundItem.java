@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class FoundItem extends Item {
 
-    private LocalDate dateFound;
+    private String dateFound;
 
     public FoundItem(String name,
                      Category category,
@@ -12,7 +12,7 @@ public class FoundItem extends Item {
                      String campus,
                      String location,
                      Integer image,
-                     LocalDate dateFound) {
+                     String dateFound) {
         super(name,
                 ItemStatus.FOUND,
                 category,
@@ -30,6 +30,6 @@ public class FoundItem extends Item {
         Getters and Setters
     */
 
-    public LocalDate getDateFound() { return this.dateFound; }
-    public void setDateFound(LocalDate dateFound) { this.dateFound = dateFound; }
+    public String getDateFound() { return this.dateFound; }
+    public void setDateFound(String dateFound) { this.dateFound = dateFound; }
 }

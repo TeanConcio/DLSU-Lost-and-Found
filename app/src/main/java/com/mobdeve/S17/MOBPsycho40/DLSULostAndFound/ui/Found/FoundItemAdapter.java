@@ -43,8 +43,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
 
         holder.foundItemImage.setImageResource(currentItem.getImage());
         holder.foundItemName.setText(currentItem.getName());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        holder.foundItemDate.setText(currentItem.getDateFound().format(dateTimeFormatter));
+        holder.foundItemDate.setText(currentItem.getDateFound());
         holder.foundItemLocation.setText(currentItem.getLocation());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +55,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
                 i.putExtra("name",currentItem.getName());
                 i.putExtra("status",currentItem.getStatus().getString());
                 i.putExtra("category",currentItem.getCategory().getString());
-                i.putExtra("date",currentItem.getDateFound().format(dateTimeFormatter));
+                i.putExtra("date",currentItem.getDateFound());
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());
                 i.putExtra("description", currentItem.getDescription());

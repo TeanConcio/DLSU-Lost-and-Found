@@ -14,7 +14,7 @@ public abstract class Item {
     private String location;
     private Integer image;
 
-    private LocalDate dateClaimed;
+    private String dateClaimed;
 
     public Item(String name,
                 ItemStatus status,
@@ -87,10 +87,10 @@ public abstract class Item {
         this.image = image;
     }
 
-    public LocalDate getDateClaimed() {
+    public String getDateClaimed() {
         return this.dateClaimed;
     }
-    public void setDateClaimed(LocalDate dateClaimed) {
+    public void setDateClaimed(String dateClaimed) {
         this.dateClaimed = dateClaimed;
     }
 }

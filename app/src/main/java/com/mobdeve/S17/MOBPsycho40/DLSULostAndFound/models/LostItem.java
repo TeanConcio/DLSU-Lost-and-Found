@@ -1,10 +1,10 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
-import java.time.LocalDate;
+
 
 public class LostItem extends Item {
 
-    private LocalDate dateLost;
+    private String dateLost;
 
     public LostItem(String name,
                     Category category,
@@ -12,7 +12,7 @@ public class LostItem extends Item {
                     String campus,
                     String location,
                     Integer image,
-                    LocalDate dateLost) {
+                    String dateLost) {
         super(name,
                 ItemStatus.LOST,
                 category,
@@ -30,10 +30,10 @@ public class LostItem extends Item {
         Getters and Setters
     */
 
-    public LocalDate getDateLost() {
+    public String getDateLost() {
         return this.dateLost;
     }
-    public void setDateLost(LocalDate dateLost) {
+    public void setDateLost(String dateLost) {
         this.dateLost = dateLost;
     }
 }
