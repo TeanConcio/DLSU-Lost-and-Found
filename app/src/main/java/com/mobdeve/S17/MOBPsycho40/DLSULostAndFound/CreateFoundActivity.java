@@ -3,8 +3,10 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,21 +14,46 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.ActivityCreateFoundBinding;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 
 import java.util.Calendar;
+
 
 public class CreateFoundActivity extends AppCompatActivity {
 
     private ActivityCreateFoundBinding binding;
+
+    DatabaseReference databaseFoundItems;
+    EditText input_title, input_location, input_description;
+    Spinner spinner_campus, spinner_category;
+    TextView input_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        databaseFoundItems = FirebaseDatabase.getInstance().getReference("foundItems");
+
         binding = ActivityCreateFoundBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // getting views
+        input_title = binding.inputTitle;
+        input_location = binding.inputLocation;
+        input_description = binding.inputDescription;
+        spinner_campus = binding.spinnerCampus;
+        spinner_category = binding.spinnerCategory;
+        input_date = binding.inputDate;
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -35,12 +62,68 @@ public class CreateFoundActivity extends AppCompatActivity {
         });
 
         binding.btnAddFoundItem.setOnClickListener(v -> {
-            finish();
+            addFoundItem();
         });
 
         setupDropdowns();
         setupDatePicker();
     }
+
+    private void addFoundItem() {
+        String title = input_title.getText().toString().trim();
+        String location = input_location.getText().toString().trim();
+        String description = input_description.getText().toString().trim();
+        String campus = spinner_campus.getSelectedItem().toString();
+        String categoryStr = spinner_category.getSelectedItem().toString();
+        String dateStr = input_date.getText().toString().trim(); // Already a string in MM/dd/yyyy format
+
+        // Validate the category
+        Category category;
+        try {
+            category = Category.valueOf(categoryStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Invalid category selected.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validate input fields
+        if (title.isEmpty()) {
+            input_title.setError("Title is required");
+            input_title.requestFocus();
+            return;
+        }
+
+        if (location.isEmpty()) {
+            input_location.setError("Location is required");
+            input_location.requestFocus();
+            return;
+        }
+
+        if (description.isEmpty()) {
+            input_description.setError("Description is required");
+            input_description.requestFocus();
+            return;
+        }
+
+        if (dateStr.isEmpty()) {
+            input_date.setError("Date is required");
+            input_date.requestFocus();
+            return;
+        }
+
+        // Add the found item
+        String id = databaseFoundItems.push().getKey();
+        FoundItem foundItem = new FoundItem(title, category, description, campus, location, 0, dateStr);
+
+        databaseFoundItems.child(id).setValue(foundItem);
+
+        // Clear the input fields
+        input_title.setText("");
+        input_location.setText("");
+        input_description.setText("");
+        input_date.setText("");
+    }
+
 
     private void setupDropdowns() {
         // Sample data for dropdowns
@@ -80,7 +163,6 @@ public class CreateFoundActivity extends AppCompatActivity {
                     },
                     year, month, day
             );
-
             datePickerDialog.show();
         });
     }

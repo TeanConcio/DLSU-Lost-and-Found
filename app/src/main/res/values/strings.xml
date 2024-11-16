@@ -25,8 +25,13 @@
     <string-array name="category">
         <item>Electronics</item>
         <item>Accessories</item>
+        <item>Containers</item>
+        <item>Essentials</item>
+        <item>Clothes</item>
+        <item>Stationaries</item>
         <item>Books</item>
-        <item>Others</item>
+        <item>Sports_Equipment</item>
+        <item>Other_Items</item>
     </string-array>
 
     <string-array name="status">
