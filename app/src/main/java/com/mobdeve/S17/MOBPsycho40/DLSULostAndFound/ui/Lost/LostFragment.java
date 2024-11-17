@@ -54,7 +54,10 @@ public class LostFragment extends Fragment {
     private LinearLayout categoryFilterView;
     private Category selectedCategory = null;
     private LinearLayout selectedCategoryView = null;
+
+    private LostItem[] lostItemList;
     private SharedPreferences sharedPreferences;
+    private LostItemAdapter lostItemAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +83,7 @@ public class LostFragment extends Fragment {
         // Data
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-        LostItem[] lostItemList = new LostItem[]{
+        lostItemList = new LostItem[]{
                 new LostItem("iPad Pro 2021", Category.ELECTRONICS, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, formatter.format(new Date())),
                 new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
                 new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
@@ -99,10 +102,10 @@ public class LostFragment extends Fragment {
             binding.addLostItem.setVisibility(View.GONE);
         }
 
-        // RecyclerView  and Adapter
+        // RecyclerView and Adapter
         binding.lostItemRecycler.setHasFixedSize(true);
         binding.lostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        LostItemAdapter lostItemAdapter = new LostItemAdapter(lostItemList, getActivity());
+        lostItemAdapter = new LostItemAdapter(lostItemList, getActivity());
         binding.lostItemRecycler.setAdapter(lostItemAdapter);
 
         // Filter Button
@@ -197,6 +200,7 @@ public class LostFragment extends Fragment {
             selectedCategoryView.setBackground(filterUnselectedColor);
             selectedCategoryView = (LinearLayout) v;
             selectedCategoryView.setBackground(filterSelectedColor);
+            lostItemAdapter.filterByCategory(category);
         }
     }
 

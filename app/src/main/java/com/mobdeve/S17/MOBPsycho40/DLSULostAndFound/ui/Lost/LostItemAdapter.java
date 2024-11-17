@@ -14,17 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ItemActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHolder> {
 
-    LostItem[] lostItemList;
-    Context context;
+    private LostItem[] lostItemList;
+    private LostItem[] filteredList;
+    private Context context;
 
     public LostItemAdapter(LostItem[] lostItemList, FragmentActivity activity) {
         this.lostItemList = lostItemList;
+        this.filteredList = lostItemList;
         this.context = activity;
     }
 
@@ -33,13 +37,12 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.list_item_lost_item,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final LostItem currentItem = lostItemList[position];
+        final LostItem currentItem = filteredList[position];
 
         holder.lostItemImage.setImageResource(currentItem.getImage());
         holder.lostItemName.setText(currentItem.getName());
@@ -65,11 +68,21 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return lostItemList.length;
+    public void filterByCategory(Category category) {
+        if (category == null) {
+            filteredList = lostItemList;
+        } else {
+            filteredList = Arrays.stream(lostItemList)
+                    .filter(item -> item.getCategory() == category)
+                    .toArray(LostItem[]::new);
+        }
+        notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemCount() {
+        return filteredList.length;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
