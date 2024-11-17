@@ -19,6 +19,7 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 
 public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHolder> {
 
@@ -29,11 +30,19 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     // Stored search queries
     private Category category = null;
     private String query = "";
+    private String campus = "";
+    private String location = "";
+    private Date startDate = null;
+    private Date endDate = null;
+    private int sortBy = 0; // Default sort by newest post
 
     public LostItemAdapter(LostItem[] lostItemList, FragmentActivity activity) {
         this.lostItemList = lostItemList;
         this.filteredList = lostItemList;
         this.context = activity;
+
+        // Apply default sort
+        this.applySort();
     }
 
     @NonNull
@@ -72,21 +81,70 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
         });
     }
 
-    public void filterByCategory(Category category) {
+    public void filterByCategory(Category category) { this.filterByCategory(category, true); }
+    public void filterByCategory(Category category, boolean applyFilters) {
         this.category = category;
-        applyFilters();
+        if (applyFilters) applyFilters();
     }
 
-    public void filterByQuery(String query) {
+    public void filterByQuery(String query) { this.filterByQuery(query, true); }
+    public void filterByQuery(String query, boolean applyFilters) {
         this.query = query;
-        applyFilters();
+        if (applyFilters) applyFilters();
+    }
+
+    public void filterByCampus(String campus) { this.filterByCampus(campus, true); }
+    public void filterByCampus(String campus, boolean applyFilters) {
+        this.campus = campus;
+        if (applyFilters) applyFilters();
+    }
+
+    public void filterByLocation(String location) { this.filterByLocation(location, true); }
+    public void filterByLocation(String location, boolean applyFilters) {
+        this.location = location;
+        if (applyFilters) applyFilters();
+    }
+
+    public void filterByDateRange(Date startDate, Date endDate) { this.filterByDateRange(startDate, endDate, true); }
+    public void filterByDateRange(Date startDate, Date endDate, boolean applyFilters) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        if (applyFilters) applyFilters();
     }
 
     private void applyFilters() {
         filteredList = Arrays.stream(lostItemList)
                 .filter(item -> (this.category == null || item.getCategory() == this.category) &&
                         (this.query == null || this.query.isEmpty() || item.getName().toLowerCase().contains(this.query.toLowerCase()) ||
-                                item.getDescription().toLowerCase().contains(this.query.toLowerCase())))
+                                item.getDescription().toLowerCase().contains(this.query.toLowerCase())) &&
+                        (this.campus == null || this.campus.equalsIgnoreCase("All") || this.campus.isEmpty() || item.getCampus().equalsIgnoreCase(this.campus)) &&
+                        (this.location == null || this.location.isEmpty() || item.getLocation().toLowerCase().contains(this.location.toLowerCase())) &&
+                        (this.startDate == null || this.endDate == null ||
+                                (item.getDateLostAsDate().after(this.startDate) && item.getDateLostAsDate().before(this.endDate))))
+                .toArray(LostItem[]::new);
+        applySort();
+    }
+
+    public void sortBy(int sortBy) { this.sortBy(sortBy, true); }
+    public void sortBy(int sortBy, boolean applySort) {
+        this.sortBy = sortBy;
+        if (applySort) applySort();
+    }
+
+    private void applySort() {
+        filteredList = Arrays.stream(filteredList)
+                .sorted((item1, item2) -> {
+                    switch (this.sortBy) {
+                        case 1: // Oldest Post
+                            return item1.getDateLostAsDate().compareTo(item2.getDateLostAsDate());
+                        case 2: // A-Z
+                            return item1.getName().compareToIgnoreCase(item2.getName());
+                        case 3: // Z-A
+                            return item2.getName().compareToIgnoreCase(item1.getName());
+                        default: // Newest Post
+                            return item2.getDateLostAsDate().compareTo(item1.getDateLostAsDate());
+                    }
+                })
                 .toArray(LostItem[]::new);
         notifyDataSetChanged();
     }

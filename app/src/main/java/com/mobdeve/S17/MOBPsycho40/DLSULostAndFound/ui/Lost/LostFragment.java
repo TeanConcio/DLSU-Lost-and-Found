@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -49,17 +50,26 @@ import java.util.Locale;
 public class LostFragment extends Fragment {
 
     private FragmentLostBinding binding;
+    private SharedPreferences sharedPreferences;
 
+    // Filter Colors
     private Drawable filterSelectedColor;
     private Drawable filterUnselectedColor;
 
+    // Category Filters
     private LinearLayout categoryFilterView;
     private Category selectedCategory = null;
     private LinearLayout selectedCategoryView = null;
 
+    // Lost Items
     private LostItem[] lostItemList;
-    private SharedPreferences sharedPreferences;
     private LostItemAdapter lostItemAdapter;
+
+    // Dialog Box Filters
+    private String selectedCampus;
+    private String location;
+    private String dateRange;
+    private int selectedSortBy;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -239,8 +249,6 @@ public class LostFragment extends Fragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_search_filter);
 
-        Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
-
         //Spinner for Campus
         Spinner campusSpinner = dialog.findViewById(R.id.spinner_campus);
         ArrayAdapter<CharSequence> adapterCampus = ArrayAdapter.createFromResource(
@@ -250,6 +258,13 @@ public class LostFragment extends Fragment {
         );
         adapterCampus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         campusSpinner.setAdapter(adapterCampus);
+
+        // EditText for Location
+        EditText locationEditText = dialog.findViewById(R.id.input_title);
+
+        //Date Range Picker
+        TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
+        dateRangeTextView.setOnClickListener(v -> showDateRangePicker(dateRangeTextView));
 
         // Spinner for Sort By
         Spinner sortBySpinner = dialog.findViewById(R.id.spinner_sort_by);
@@ -261,12 +276,22 @@ public class LostFragment extends Fragment {
         adapterSortBy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortBySpinner.setAdapter(adapterSortBy);
 
-        //Date Range Picker
-        TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
-        dateRangeTextView.setOnClickListener(v -> showDateRangePicker(dateRangeTextView));
+        // Set the dialog views to the stored values
+        if (this.selectedCampus != null) {
+            int campusPosition = adapterCampus.getPosition(this.selectedCampus);
+            campusSpinner.setSelection(campusPosition);
+        }
+        if (this.location != null) {
+            locationEditText.setText(this.location);
+        }
+        if (this.dateRange != null) {
+            dateRangeTextView.setText(this.dateRange);
+        }
+        if (this.selectedSortBy != -1) {
+            sortBySpinner.setSelection(this.selectedSortBy);
+        }
 
-
-        //Dialog Position and Dim ammount
+        //Dialog Position and Dim amount
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
@@ -277,6 +302,54 @@ public class LostFragment extends Fragment {
             params.dimAmount = 0;
             dialog.getWindow().setAttributes(params);
         }
+
+        // Clear Button
+        Button btnSearchClear = dialog.findViewById(R.id.btn_clearSearch);
+        btnSearchClear.setOnClickListener(v -> {
+            // Clear the saved values
+            this.selectedCampus = null;
+            this.location = null;
+            this.dateRange = null;
+            this.selectedSortBy = -1;
+
+            // Clear the dialog views
+            campusSpinner.setSelection(0);
+            locationEditText.setText("");
+            dateRangeTextView.setText("");
+            sortBySpinner.setSelection(0);
+        });
+
+        // Confirm Button
+        Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
+        btnSearchConfirm.setOnClickListener(v -> {
+            this.selectedCampus = campusSpinner.getSelectedItem().toString();
+            this.location = locationEditText.getText().toString();
+            this.dateRange = dateRangeTextView.getText().toString();
+            this.selectedSortBy = sortBySpinner.getSelectedItemPosition();
+
+            // Parse the date range
+            String[] dates = dateRange.split(" - ");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+            Date startDate = null;
+            Date endDate = null;
+            try {
+                if (dates.length == 2) {
+                    startDate = sdf.parse(dates[0]);
+                    endDate = sdf.parse(dates[1]);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Apply filters
+            lostItemAdapter.filterByCampus(selectedCampus, false);
+            lostItemAdapter.filterByLocation(location, false);
+            lostItemAdapter.filterByDateRange(startDate, endDate);
+            lostItemAdapter.sortBy(selectedSortBy);
+
+            dialog.dismiss();
+        });
+
         dialog.show();
     }
 
@@ -305,9 +378,4 @@ public class LostFragment extends Fragment {
             }
         });
     }
-
-
-
-
-
 }
