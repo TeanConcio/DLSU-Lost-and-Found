@@ -26,6 +26,10 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     private LostItem[] filteredList;
     private Context context;
 
+    // Stored search queries
+    private Category category = null;
+    private String query = "";
+
     public LostItemAdapter(LostItem[] lostItemList, FragmentActivity activity) {
         this.lostItemList = lostItemList;
         this.filteredList = lostItemList;
@@ -69,13 +73,21 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     }
 
     public void filterByCategory(Category category) {
-        if (category == null) {
-            filteredList = lostItemList;
-        } else {
-            filteredList = Arrays.stream(lostItemList)
-                    .filter(item -> item.getCategory() == category)
-                    .toArray(LostItem[]::new);
-        }
+        this.category = category;
+        applyFilters();
+    }
+
+    public void filterByQuery(String query) {
+        this.query = query;
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        filteredList = Arrays.stream(lostItemList)
+                .filter(item -> (this.category == null || item.getCategory() == this.category) &&
+                        (this.query == null || this.query.isEmpty() || item.getName().toLowerCase().contains(this.query.toLowerCase()) ||
+                                item.getDescription().toLowerCase().contains(this.query.toLowerCase())))
+                .toArray(LostItem[]::new);
         notifyDataSetChanged();
     }
 

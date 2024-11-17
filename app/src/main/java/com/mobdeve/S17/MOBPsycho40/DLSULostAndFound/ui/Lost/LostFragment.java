@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.graphics.text.LineBreaker;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -72,6 +74,7 @@ public class LostFragment extends Fragment {
 //        final TextView textView = binding.textLost;
 //        lostViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        // Set up the filter colors
         filterSelectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_default_white);
         filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.color.white);
 
@@ -79,10 +82,8 @@ public class LostFragment extends Fragment {
         categoryFilterView = binding.lostFilterScroll;
         this.makeCategoryFilters();
 
-
-        // Data
+        // Data and Date Format
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
         lostItemList = new LostItem[]{
                 new LostItem("iPad Pro 2021", Category.ELECTRONICS, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, formatter.format(new Date())),
                 new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
@@ -98,24 +99,39 @@ public class LostFragment extends Fragment {
                 new LostItem("Canvas Tote Bag", Category.CONTAINERS, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, formatter.format(new Date()))
         };
 
-        if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
-            binding.addLostItem.setVisibility(View.GONE);
-        }
-
         // RecyclerView and Adapter
         binding.lostItemRecycler.setHasFixedSize(true);
         binding.lostItemRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         lostItemAdapter = new LostItemAdapter(lostItemList, getActivity());
         binding.lostItemRecycler.setAdapter(lostItemAdapter);
 
+        // Add Lost Item Button
+        if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
+            binding.addLostItem.setVisibility(View.GONE);
+            binding.addLostItem.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), CreateLostActivity.class);
+                startActivity(intent);
+            });
+        }
+
         // Filter Button
         binding.lostFilterButton.setOnClickListener(v -> {
             showSearchDialog();
         });
 
-        binding.addLostItem.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateLostActivity.class);
-            startActivity(intent);
+        // Set up SearchView
+        binding.lostSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                lostItemAdapter.filterByQuery(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                lostItemAdapter.filterByQuery(newText);
+                return false;
+            }
         });
 
         return root;
@@ -173,7 +189,7 @@ public class LostFragment extends Fragment {
             textView.setText(category.getString()); // Assuming category has a string method
             textView.setTextColor(ContextCompat.getColor(getContext(), R.color.green_700));
             textView.setTextSize(10);
-            textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+            textView.setBreakStrategy(LineBreaker.BREAK_STRATEGY_SIMPLE);
 
             // Add the image view and text view to the filter
             filter.addView(imageView);
