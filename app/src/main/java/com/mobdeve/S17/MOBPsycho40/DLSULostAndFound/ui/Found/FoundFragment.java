@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.graphics.text.LineBreaker;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.Gravity;
@@ -18,47 +19,57 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.CreateFoundActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
+import java.time.LocalDate;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+
 
 public class FoundFragment extends Fragment {
 
     private FragmentFoundBinding binding;
+    private SharedPreferences sharedPreferences;
 
+    // Filter Colors
     private Drawable filterSelectedColor;
     private Drawable filterUnselectedColor;
 
+    // Category Filters
     private LinearLayout categoryFilterView;
     private Category selectedCategory = null;
     private LinearLayout selectedCategoryView = null;
 
-    private SharedPreferences sharedPreferences;
+    // Found Items
+    private FoundItem[] foundItemList;
+    private FoundItemAdapter foundItemAdapter;
 
-
+    // Dialog Box Filters
+    private String selectedCampus;
+    private String location;
+    private String dateRange;
+    private int selectedSortBy;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +84,7 @@ public class FoundFragment extends Fragment {
 //        final TextView textView = binding.textFound;
 //        foundViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+        // Set up the filter colors
         filterSelectedColor = ContextCompat.getDrawable(requireContext(), R.drawable.bg_ripple_default_white);
         filterUnselectedColor = ContextCompat.getDrawable(requireContext(), R.color.white);
 
@@ -80,11 +92,9 @@ public class FoundFragment extends Fragment {
         categoryFilterView = binding.foundFilterScroll;
         this.makeCategoryFilters();
 
-        // Data
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
-        FoundItem[] foundItemList = new FoundItem[]{
+        // Data and Date Format
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        foundItemList = new FoundItem[]{
                 new FoundItem("Gray Beanie", Category.CLOTHES, "A gray wool beanie. It's slightly stretched but still in good condition.", "BGC", "Found in the outdoor seating area near the café", R.drawable.sample_gray_beanie, formatter.format(new Date())),
                 new FoundItem("Keychain with Multiple Keys", Category.ESSENTIALS, "A set of house and car keys on a DLSU keychain. One of the keys has a red sticker.", "Manila", "Found in the parking lot", R.drawable.sample_keychain_with_keys, formatter.format(new Date())),
                 new FoundItem("Thermos Flask", Category.ESSENTIALS, "A silver thermos flask with a black lid. Has a few scratches on the surface.", "Laguna", "Found on a bench near the garden", R.drawable.sample_thermos_flask, formatter.format(new Date())),
@@ -97,34 +107,45 @@ public class FoundFragment extends Fragment {
                 new FoundItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, formatter.format(new Date())),
                 new FoundItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, formatter.format(new Date()))
         };
-        foundItemList[0].setStatus(ItemStatus.CLAIMED);
 
-        if (!sharedPreferences.getBoolean("isAdmin", false)) {
-            binding.addFoundItem.setVisibility(View.GONE);
-        }
-
-        if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
-            binding.addFoundItem.setVisibility(View.GONE);
-        }
-        
         // RecyclerView and Adapter
         binding.foundItemRecycler.setHasFixedSize(true);
         binding.foundItemRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        FoundItemAdapter foundItemAdapter = new FoundItemAdapter(foundItemList, getActivity());
+        foundItemAdapter = new FoundItemAdapter(foundItemList, getActivity());
         binding.foundItemRecycler.setAdapter(foundItemAdapter);
 
+        // Add Found Item Button
+        if (!sharedPreferences.getBoolean("isAdmin", false) ||
+                !sharedPreferences.getBoolean("isLoggedIn", false)) {
+            binding.addFoundItem.setVisibility(View.GONE);
+            binding.addFoundItem.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), CreateFoundActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        // Filter Button
         binding.foundFilterButton.setOnClickListener(v -> {
             showSearchDialog();
         });
 
-        binding.addFoundItem.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateFoundActivity.class);
-            startActivity(intent);
+        // Set up SearchView
+        binding.foundSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                foundItemAdapter.filterByQuery(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                foundItemAdapter.filterByQuery(newText);
+                return false;
+            }
         });
 
         return root;
     }
-
 
     @Override
     public void onDestroyView() {
@@ -132,11 +153,10 @@ public class FoundFragment extends Fragment {
         binding = null;
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     private void makeCategoryFilters() {
         // Create a filter button for the "All" category
-        LinearLayout allFilter = binding.allLostFilter;
+        LinearLayout allFilter = binding.allFoundFilter;
         allFilter.setOnClickListener(v -> onSelectFilter(v, null));
         allFilter.setOnTouchListener(this::onTouch);
 
@@ -156,7 +176,7 @@ public class FoundFragment extends Fragment {
             filter.setOrientation(LinearLayout.VERTICAL);
             filter.setPadding(convertPxToDp(10), convertPxToDp(10), convertPxToDp(10), convertPxToDp(10));
 
-            // Create an ImageView`
+            // Create an ImageView
             ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
                     convertPxToDp(40),
@@ -164,7 +184,7 @@ public class FoundFragment extends Fragment {
             );
             imageParams.setMargins(convertPxToDp(2.5), 0, convertPxToDp(2.5), 0);
             imageView.setLayoutParams(imageParams);
-            imageView.setImageResource(category.getIcon());
+            imageView.setImageResource(category.getIcon()); // Assuming category has an icon method
             imageView.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.green_700));
 
             // Create a TextView
@@ -176,23 +196,23 @@ public class FoundFragment extends Fragment {
             textView.setLayoutParams(textParams);
             textView.setGravity(Gravity.CENTER);
             textView.setLines(2);
-            textView.setText(category.getString());
+            textView.setText(category.getString()); // Assuming category has a string method
             textView.setTextColor(ContextCompat.getColor(getContext(), R.color.green_700));
             textView.setTextSize(10);
-            textView.setBreakStrategy(Layout.BREAK_STRATEGY_SIMPLE);
+            textView.setBreakStrategy(LineBreaker.BREAK_STRATEGY_SIMPLE);
 
             // Add the image view and text view to the filter
             filter.addView(imageView);
             filter.addView(textView);
 
-            // Set an on click listener for the filter
+            // Set an onClickListener for the filter
             filter.setOnClickListener(v -> onSelectFilter(v, category));
 
-            // Set an on touch listener for the filter
+            // Set an onTouchListener for the filter
             filter.setOnTouchListener(this::onTouch);
 
             // Add the filter to the scroll view
-            categoryFilterView.addView(filter);
+            binding.foundFilterScroll.addView(filter);
         }
 
         // Set the "All" category as the default selected category
@@ -200,18 +220,18 @@ public class FoundFragment extends Fragment {
         selectedCategoryView.setBackground(filterSelectedColor);
     }
 
-
     private void onSelectFilter(View v, Category category) {
         if (selectedCategory != category) {
             selectedCategory = category;
             selectedCategoryView.setBackground(filterUnselectedColor);
             selectedCategoryView = (LinearLayout) v;
             selectedCategoryView.setBackground(filterSelectedColor);
+            foundItemAdapter.filterByCategory(category);
         }
     }
 
 
-    private boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.filter_press);
             v.startAnimation(anim);
@@ -219,29 +239,32 @@ public class FoundFragment extends Fragment {
         return false;
     }
 
-
     private int convertPxToDp(double px) {
         float scale = getResources().getDisplayMetrics().density;
         return (int) (px * scale + 0.5f);
     }
 
-
     private void showSearchDialog() {
         // Create a dialog instance
-        final Dialog dialog = new Dialog(requireActivity());
+        final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_search_filter);
 
-        Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
-
-        // Spinner for Campus
+        //Spinner for Campus
         Spinner campusSpinner = dialog.findViewById(R.id.spinner_campus);
         ArrayAdapter<CharSequence> adapterCampus = ArrayAdapter.createFromResource(
-                requireContext(),
+                this.requireContext(),
                 R.array.campus,
                 R.layout.spinner_item
         );
         adapterCampus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         campusSpinner.setAdapter(adapterCampus);
+
+        // EditText for Location
+        EditText locationEditText = dialog.findViewById(R.id.input_title);
+
+        //Date Range Picker
+        TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
+        dateRangeTextView.setOnClickListener(v -> showDateRangePicker(dateRangeTextView));
 
         // Spinner for Sort By
         Spinner sortBySpinner = dialog.findViewById(R.id.spinner_sort_by);
@@ -253,13 +276,22 @@ public class FoundFragment extends Fragment {
         adapterSortBy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortBySpinner.setAdapter(adapterSortBy);
 
+        // Set the dialog views to the stored values
+        if (this.selectedCampus != null) {
+            int campusPosition = adapterCampus.getPosition(this.selectedCampus);
+            campusSpinner.setSelection(campusPosition);
+        }
+        if (this.location != null) {
+            locationEditText.setText(this.location);
+        }
+        if (this.dateRange != null) {
+            dateRangeTextView.setText(this.dateRange);
+        }
+        if (this.selectedSortBy != -1) {
+            sortBySpinner.setSelection(this.selectedSortBy);
+        }
 
-        //Date Range Picker
-        TextView dateRangeTextView = dialog.findViewById(R.id.input_date_range);
-        dateRangeTextView.setOnClickListener(v -> showDateRangePicker(dateRangeTextView));
-
-
-        //Dialog Position and Dim ammount
+        //Dialog Position and Dim amount
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
@@ -270,9 +302,50 @@ public class FoundFragment extends Fragment {
             params.dimAmount = 0;
             dialog.getWindow().setAttributes(params);
         }
+
+        // Clear Button
+        Button btnSearchClear = dialog.findViewById(R.id.btn_clearSearch);
+        btnSearchClear.setOnClickListener(v -> {
+            // Clear the dialog views
+            campusSpinner.setSelection(0);
+            locationEditText.setText("");
+            dateRangeTextView.setText("");
+            sortBySpinner.setSelection(0);
+        });
+
+        // Confirm Button
+        Button btnSearchConfirm = dialog.findViewById(R.id.btn_filteredSearch);
+        btnSearchConfirm.setOnClickListener(v -> {
+            this.selectedCampus = campusSpinner.getSelectedItem().toString();
+            this.location = locationEditText.getText().toString();
+            this.dateRange = dateRangeTextView.getText().toString();
+            this.selectedSortBy = sortBySpinner.getSelectedItemPosition();
+
+            // Parse the date range
+            String[] dates = dateRange.split(" - ");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+            Date startDate = null;
+            Date endDate = null;
+            try {
+                if (dates.length == 2) {
+                    startDate = sdf.parse(dates[0]);
+                    endDate = sdf.parse(dates[1]);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Apply filters
+            foundItemAdapter.filterByCampus(selectedCampus, false);
+            foundItemAdapter.filterByLocation(location, false);
+            foundItemAdapter.filterByDateRange(startDate, endDate);
+            foundItemAdapter.sortBy(selectedSortBy);
+
+            dialog.dismiss();
+        });
+
         dialog.show();
     }
-
 
     private void showDateRangePicker(final TextView date) {
         MaterialDatePicker<Pair<Long, Long>> dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()

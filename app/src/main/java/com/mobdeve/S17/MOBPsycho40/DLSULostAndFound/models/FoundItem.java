@@ -1,6 +1,9 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 public class FoundItem extends Item {
 
@@ -32,4 +35,13 @@ public class FoundItem extends Item {
 
     public String getDateFound() { return this.dateFound; }
     public void setDateFound(String dateFound) { this.dateFound = dateFound; }
+    public Date getDateFoundAsDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        try {
+            return sdf.parse(this.dateFound);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

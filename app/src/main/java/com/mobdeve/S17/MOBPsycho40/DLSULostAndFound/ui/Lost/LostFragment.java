@@ -306,12 +306,6 @@ public class LostFragment extends Fragment {
         // Clear Button
         Button btnSearchClear = dialog.findViewById(R.id.btn_clearSearch);
         btnSearchClear.setOnClickListener(v -> {
-            // Clear the saved values
-            this.selectedCampus = null;
-            this.location = null;
-            this.dateRange = null;
-            this.selectedSortBy = -1;
-
             // Clear the dialog views
             campusSpinner.setSelection(0);
             locationEditText.setText("");
