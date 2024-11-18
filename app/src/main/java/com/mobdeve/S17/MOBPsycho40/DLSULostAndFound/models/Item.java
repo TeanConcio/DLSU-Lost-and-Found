@@ -16,6 +16,10 @@ public abstract class Item {
 
     private String dateClaimed;
 
+    public Item() {
+        // No-argument constructor for Firebase
+    }
+
     public Item(String name,
                 ItemStatus status,
                 Category category,

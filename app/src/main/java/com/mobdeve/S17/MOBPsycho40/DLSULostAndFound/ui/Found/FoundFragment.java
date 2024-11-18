@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -41,9 +42,18 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentFoundBin
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDate;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -149,6 +159,42 @@ public class FoundFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchFoundItemsFromDatabase();
+    }
+
+    private void fetchFoundItemsFromDatabase() {
+        DatabaseReference databaseFoundItems = FirebaseDatabase.getInstance().getReference("foundItems");
+        databaseFoundItems.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // Fetch data from Firebase
+                List<FoundItem> tempItemList = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    FoundItem item = postSnapshot.getValue(FoundItem.class);
+                    if (item != null) {
+                        tempItemList.add(item);
+                    }
+                }
+
+                // Convert list to array and update adapter
+                FoundItem[] newFoundItemList = tempItemList.toArray(new FoundItem[0]);
+                foundItemAdapter.updateData(newFoundItemList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Failed to load data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     @Override
     public void onDestroyView() {

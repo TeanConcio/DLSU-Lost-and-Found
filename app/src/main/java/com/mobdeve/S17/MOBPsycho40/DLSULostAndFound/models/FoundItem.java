@@ -8,6 +8,11 @@ public class FoundItem extends Item {
 
     private String dateFound;
 
+    // Default constructor required for Firebase
+    public FoundItem() {
+        super();
+    }
+
     public FoundItem(String name,
                      Category category,
                      String description,
@@ -26,14 +31,17 @@ public class FoundItem extends Item {
         this.dateFound = dateFound;
     }
 
-
-
     /*
         Getters and Setters
     */
+    public String getDateFound() {
+        return this.dateFound;
+    }
 
-    public String getDateFound() { return this.dateFound; }
-    public void setDateFound(String dateFound) { this.dateFound = dateFound; }
+    public void setDateFound(String dateFound) {
+        this.dateFound = dateFound;
+    }
+
     public Date parseDateFoundAsDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         try {

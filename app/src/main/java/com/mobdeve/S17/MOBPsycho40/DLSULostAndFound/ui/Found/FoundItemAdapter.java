@@ -168,4 +168,10 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
         }
     }
 
+    public void updateData(FoundItem[] newFoundItemList) {
+        this.foundItemList = newFoundItemList;
+        this.filteredList = newFoundItemList; // Reset filters
+        notifyDataSetChanged(); // Notify RecyclerView about the dataset change
+    }
+
 }
