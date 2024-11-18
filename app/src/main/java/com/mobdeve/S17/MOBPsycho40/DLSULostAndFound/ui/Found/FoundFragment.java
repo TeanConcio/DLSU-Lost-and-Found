@@ -72,7 +72,8 @@ public class FoundFragment extends Fragment {
     private LinearLayout selectedCategoryView = null;
 
     // Found Items
-    private FoundItem[] foundItemList;
+    private ArrayList<FoundItem> foundItemList;
+
     private FoundItemAdapter foundItemAdapter;
 
     // Dialog Box Filters
@@ -103,20 +104,22 @@ public class FoundFragment extends Fragment {
         this.makeCategoryFilters();
 
         // Data and Date Format
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        foundItemList = new FoundItem[]{
-                new FoundItem("Gray Beanie", Category.CLOTHES, "A gray wool beanie. It's slightly stretched but still in good condition.", "BGC", "Found in the outdoor seating area near the café", R.drawable.sample_gray_beanie, formatter.format(new Date())),
-                new FoundItem("Keychain with Multiple Keys", Category.ESSENTIALS, "A set of house and car keys on a DLSU keychain. One of the keys has a red sticker.", "Manila", "Found in the parking lot", R.drawable.sample_keychain_with_keys, formatter.format(new Date())),
-                new FoundItem("Thermos Flask", Category.ESSENTIALS, "A silver thermos flask with a black lid. Has a few scratches on the surface.", "Laguna", "Found on a bench near the garden", R.drawable.sample_thermos_flask, formatter.format(new Date())),
-                new FoundItem("Sketchbook", Category.BOOKS, "A black hardcover sketchbook with several drawings inside. Owner's name is 'Anna'.", "Off-Campus", "Left in a coffee shop", R.drawable.sample_sketch_book, formatter.format(new Date())),
-                new FoundItem("Red Scarf", Category.CLOTHES, "A red scarf with a checkered pattern. It's made of soft wool.", "Manila", "Found in the library study area", R.drawable.sample_red_scarf, formatter.format(new Date())),
-                new FoundItem("Basketball", Category.SPORTS_EQUIPMENT, "A well-used Spalding basketball. Slightly deflated.", "Laguna", "Found on the basketball court", R.drawable.sample_basketball, formatter.format(new Date())),
-                new FoundItem("Sunglasses", Category.ACCESSORIES, "A pair of black Ray-Ban sunglasses in a brown leather case.", "BGC", "Found near the gym entrance", R.drawable.sample_sunglasses, formatter.format(new Date())),
-                new FoundItem("Pen Set", Category.STATIONERIES, "A black and gold pen set inside a velvet box. Looks new and unused.", "Manila", "Found in a classroom", R.drawable.sample_pen_set, formatter.format(new Date())),
-                new FoundItem("Yoga Mat", Category.SPORTS_EQUIPMENT, "A purple yoga mat rolled up with a strap. Slightly worn.", "Off-Campus", "Found in a fitness center locker room", R.drawable.sample_yoga_mat, formatter.format(new Date())),
-                new FoundItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, formatter.format(new Date())),
-                new FoundItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, formatter.format(new Date()))
-        };
+//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//        foundItemList = new FoundItem[]{
+//                new FoundItem("Gray Beanie", Category.CLOTHES, "A gray wool beanie. It's slightly stretched but still in good condition.", "BGC", "Found in the outdoor seating area near the café", R.drawable.sample_gray_beanie, formatter.format(new Date())),
+//                new FoundItem("Keychain with Multiple Keys", Category.ESSENTIALS, "A set of house and car keys on a DLSU keychain. One of the keys has a red sticker.", "Manila", "Found in the parking lot", R.drawable.sample_keychain_with_keys, formatter.format(new Date())),
+//                new FoundItem("Thermos Flask", Category.ESSENTIALS, "A silver thermos flask with a black lid. Has a few scratches on the surface.", "Laguna", "Found on a bench near the garden", R.drawable.sample_thermos_flask, formatter.format(new Date())),
+//                new FoundItem("Sketchbook", Category.BOOKS, "A black hardcover sketchbook with several drawings inside. Owner's name is 'Anna'.", "Off-Campus", "Left in a coffee shop", R.drawable.sample_sketch_book, formatter.format(new Date())),
+//                new FoundItem("Red Scarf", Category.CLOTHES, "A red scarf with a checkered pattern. It's made of soft wool.", "Manila", "Found in the library study area", R.drawable.sample_red_scarf, formatter.format(new Date())),
+//                new FoundItem("Basketball", Category.SPORTS_EQUIPMENT, "A well-used Spalding basketball. Slightly deflated.", "Laguna", "Found on the basketball court", R.drawable.sample_basketball, formatter.format(new Date())),
+//                new FoundItem("Sunglasses", Category.ACCESSORIES, "A pair of black Ray-Ban sunglasses in a brown leather case.", "BGC", "Found near the gym entrance", R.drawable.sample_sunglasses, formatter.format(new Date())),
+//                new FoundItem("Pen Set", Category.STATIONERIES, "A black and gold pen set inside a velvet box. Looks new and unused.", "Manila", "Found in a classroom", R.drawable.sample_pen_set, formatter.format(new Date())),
+//                new FoundItem("Yoga Mat", Category.SPORTS_EQUIPMENT, "A purple yoga mat rolled up with a strap. Slightly worn.", "Off-Campus", "Found in a fitness center locker room", R.drawable.sample_yoga_mat, formatter.format(new Date())),
+//                new FoundItem("Airpods Pro", Category.ELECTRONICS, "It is the airpods owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_airpods_pro, formatter.format(new Date())),
+//                new FoundItem("Macbook Pro 2021", Category.ELECTRONICS, "It is the macbook owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_macbook_pro_2021, formatter.format(new Date()))
+//        };
+        foundItemList = new ArrayList<>();
+
 
         // RecyclerView and Adapter
         binding.foundItemRecycler.setHasFixedSize(true);
@@ -171,20 +174,19 @@ public class FoundFragment extends Fragment {
         databaseFoundItems.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                // Fetch data from Firebase
-                List<FoundItem> tempItemList = new ArrayList<>();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    FoundItem item = postSnapshot.getValue(FoundItem.class);
+                ArrayList<FoundItem> tempList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    FoundItem item = snapshot.getValue(FoundItem.class);
                     if (item != null) {
-                        tempItemList.add(item);
+                        tempList.add(item);
                     }
                 }
 
-                // Convert list to array and update adapter
-                FoundItem[] newFoundItemList = tempItemList.toArray(new FoundItem[0]);
-                foundItemAdapter.updateData(newFoundItemList);
+//                FoundItemAdapter foundItemAdapter = new FoundItemAdapter(tempList, getActivity());
+//                binding.foundItemRecycler.setAdapter(foundItemAdapter);
+
+
+                foundItemAdapter.updateData(tempList); // Pass updated data to adapter
             }
 
             @Override
@@ -193,6 +195,8 @@ public class FoundFragment extends Fragment {
             }
         });
     }
+
+
 
 
 
