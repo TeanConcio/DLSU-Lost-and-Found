@@ -122,6 +122,8 @@ public class CreateFoundActivity extends AppCompatActivity {
         input_location.setText("");
         input_description.setText("");
         input_date.setText("");
+        Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 

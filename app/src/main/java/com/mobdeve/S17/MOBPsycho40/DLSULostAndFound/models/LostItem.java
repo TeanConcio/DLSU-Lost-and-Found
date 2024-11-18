@@ -39,7 +39,7 @@ public class LostItem extends Item {
     public void setDateLost(String dateLost) {
         this.dateLost = dateLost;
     }
-    public Date getDateLostAsDate() {
+    public Date parseDateLostAsDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         try {
             return sdf.parse(this.dateLost);

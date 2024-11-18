@@ -17,7 +17,6 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -119,7 +118,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
                         (this.campus == null || this.campus.equalsIgnoreCase("All") || this.campus.isEmpty() || item.getCampus().equalsIgnoreCase(this.campus)) &&
                         (this.location == null || this.location.isEmpty() || item.getLocation().toLowerCase().contains(this.location.toLowerCase())) &&
                         (this.startDate == null || this.endDate == null ||
-                                (item.getDateFoundAsDate().after(this.startDate) && item.getDateFoundAsDate().before(this.endDate))))
+                                (item.parseDateFoundAsDate().after(this.startDate) && item.parseDateFoundAsDate().before(this.endDate))))
                 .toArray(FoundItem[]::new);
         applySort();
     }
@@ -135,13 +134,13 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
                 .sorted((item1, item2) -> {
                     switch (this.sortBy) {
                         case 1: // Oldest Post
-                            return item1.getDateFoundAsDate().compareTo(item2.getDateFoundAsDate());
+                            return item1.parseDateFoundAsDate().compareTo(item2.parseDateFoundAsDate());
                         case 2: // A-Z
                             return item1.getName().compareToIgnoreCase(item2.getName());
                         case 3: // Z-A
                             return item2.getName().compareToIgnoreCase(item1.getName());
                         default: // Newest Post
-                            return item2.getDateFoundAsDate().compareTo(item1.getDateFoundAsDate());
+                            return item2.parseDateFoundAsDate().compareTo(item1.parseDateFoundAsDate());
                     }
                 })
                 .toArray(FoundItem[]::new);

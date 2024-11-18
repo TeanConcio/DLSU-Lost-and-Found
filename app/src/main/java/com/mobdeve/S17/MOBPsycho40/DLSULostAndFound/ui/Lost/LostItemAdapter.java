@@ -17,7 +17,6 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -120,7 +119,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
                         (this.campus == null || this.campus.equalsIgnoreCase("All") || this.campus.isEmpty() || item.getCampus().equalsIgnoreCase(this.campus)) &&
                         (this.location == null || this.location.isEmpty() || item.getLocation().toLowerCase().contains(this.location.toLowerCase())) &&
                         (this.startDate == null || this.endDate == null ||
-                                (item.getDateLostAsDate().after(this.startDate) && item.getDateLostAsDate().before(this.endDate))))
+                                (item.parseDateLostAsDate().after(this.startDate) && item.parseDateLostAsDate().before(this.endDate))))
                 .toArray(LostItem[]::new);
         applySort();
     }
@@ -136,13 +135,13 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
                 .sorted((item1, item2) -> {
                     switch (this.sortBy) {
                         case 1: // Oldest Post
-                            return item1.getDateLostAsDate().compareTo(item2.getDateLostAsDate());
+                            return item1.parseDateLostAsDate().compareTo(item2.parseDateLostAsDate());
                         case 2: // A-Z
                             return item1.getName().compareToIgnoreCase(item2.getName());
                         case 3: // Z-A
                             return item2.getName().compareToIgnoreCase(item1.getName());
                         default: // Newest Post
-                            return item2.getDateLostAsDate().compareTo(item1.getDateLostAsDate());
+                            return item2.parseDateLostAsDate().compareTo(item1.parseDateLostAsDate());
                     }
                 })
                 .toArray(LostItem[]::new);
