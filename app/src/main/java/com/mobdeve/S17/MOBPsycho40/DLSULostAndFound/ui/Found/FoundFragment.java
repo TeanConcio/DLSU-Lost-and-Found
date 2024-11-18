@@ -118,11 +118,14 @@ public class FoundFragment extends Fragment {
         if (!sharedPreferences.getBoolean("isAdmin", false) ||
                 !sharedPreferences.getBoolean("isLoggedIn", false)) {
             binding.addFoundItem.setVisibility(View.GONE);
+        } else {
+            binding.addFoundItem.setVisibility(View.VISIBLE);
             binding.addFoundItem.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), CreateFoundActivity.class);
                 startActivity(intent);
             });
         }
+
 
         // Filter Button
         binding.foundFilterButton.setOnClickListener(v -> {

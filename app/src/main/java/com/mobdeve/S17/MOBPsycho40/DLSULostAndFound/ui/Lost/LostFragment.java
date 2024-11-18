@@ -117,7 +117,9 @@ public class LostFragment extends Fragment {
 
         // Add Lost Item Button
         if (!sharedPreferences.getBoolean("isLoggedIn", false)) {
-            binding.addLostItem.setVisibility(View.GONE);
+            binding.addLostItem.setVisibility(View.GONE); // Completely hide the button
+        } else {
+            binding.addLostItem.setVisibility(View.VISIBLE); // Show the button
             binding.addLostItem.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), CreateLostActivity.class);
                 startActivity(intent);
