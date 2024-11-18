@@ -42,7 +42,9 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -62,7 +64,7 @@ public class LostFragment extends Fragment {
     private LinearLayout selectedCategoryView = null;
 
     // Lost Items
-    private LostItem[] lostItemList;
+    private ArrayList<LostItem> lostItemList;
     private LostItemAdapter lostItemAdapter;
 
     // Dialog Box Filters
@@ -92,9 +94,11 @@ public class LostFragment extends Fragment {
         categoryFilterView = binding.lostFilterScroll;
         this.makeCategoryFilters();
 
+
+        lostItemList = new ArrayList<>();
         // Data and Date Format
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        lostItemList = new LostItem[]{
+        Collections.addAll(lostItemList,
                 new LostItem("iPad Pro 2021", Category.ELECTRONICS, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, formatter.format(new Date())),
                 new LostItem("Black Leather Wallet", Category.ESSENTIALS, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
                 new LostItem("Green Hoodie", Category.CLOTHES, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
@@ -107,7 +111,7 @@ public class LostFragment extends Fragment {
                 new LostItem("Glasses Case", Category.ACCESSORIES, "A black hard-shell glasses case. Contains prescription glasses.", "Off-Campus", "Found at the reception counter of a coffee shop", R.drawable.sample_glasses_case, formatter.format(new Date())),
                 new LostItem("Brown Leather Belt", Category.ACCESSORIES, "A brown leather belt with a silver buckle. Slightly worn but in good condition.", "Manila", "Found hanging on a chair in the cafeteria", R.drawable.sample_brown_leather_belt, formatter.format(new Date())),
                 new LostItem("Canvas Tote Bag", Category.CONTAINERS, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, formatter.format(new Date()))
-        };
+        );
 
         // RecyclerView and Adapter
         binding.lostItemRecycler.setHasFixedSize(true);

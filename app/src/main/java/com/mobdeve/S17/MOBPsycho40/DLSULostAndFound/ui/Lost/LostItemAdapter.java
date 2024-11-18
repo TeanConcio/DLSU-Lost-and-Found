@@ -15,15 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ItemActivity;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHolder> {
 
-    private LostItem[] lostItemList;
-    private LostItem[] filteredList;
+    private ArrayList<LostItem> lostItemList;
+    private ArrayList<LostItem> filteredList;
     private Context context;
 
     // Stored search queries
@@ -35,9 +38,9 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     private Date endDate = null;
     private int sortBy = 0; // Default sort by newest post
 
-    public LostItemAdapter(LostItem[] lostItemList, FragmentActivity activity) {
-        this.lostItemList = lostItemList;
-        this.filteredList = lostItemList;
+    public LostItemAdapter(ArrayList<LostItem> lostItemList, FragmentActivity activity) {
+        this.lostItemList = new ArrayList<>(lostItemList);
+        this.filteredList = new ArrayList<>(lostItemList);
         this.context = activity;
 
         // Apply default sort
@@ -54,7 +57,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final LostItem currentItem = filteredList[position];
+        final LostItem currentItem = filteredList.get(position);
 
         holder.lostItemImage.setImageResource(currentItem.getImage());
         holder.lostItemName.setText(currentItem.getName());
@@ -112,15 +115,18 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     }
 
     private void applyFilters() {
-        filteredList = Arrays.stream(lostItemList)
-                .filter(item -> (this.category == null || item.getCategory() == this.category) &&
-                        (this.query == null || this.query.isEmpty() || item.getName().toLowerCase().contains(this.query.toLowerCase()) ||
-                                item.getDescription().toLowerCase().contains(this.query.toLowerCase())) &&
-                        (this.campus == null || this.campus.equalsIgnoreCase("All") || this.campus.isEmpty() || item.getCampus().equalsIgnoreCase(this.campus)) &&
-                        (this.location == null || this.location.isEmpty() || item.getLocation().toLowerCase().contains(this.location.toLowerCase())) &&
-                        (this.startDate == null || this.endDate == null ||
-                                (item.parseDateLostAsDate().after(this.startDate) && item.parseDateLostAsDate().before(this.endDate))))
-                .toArray(LostItem[]::new);
+        filteredList.clear();
+        for (LostItem item : lostItemList) {
+            if ((this.category == null || item.getCategory() == this.category) &&
+                    (this.query == null || this.query.isEmpty() || item.getName().toLowerCase().contains(this.query.toLowerCase()) ||
+                            item.getDescription().toLowerCase().contains(this.query.toLowerCase())) &&
+                    (this.campus == null || this.campus.equalsIgnoreCase("All") || this.campus.isEmpty() || item.getCampus().equalsIgnoreCase(this.campus)) &&
+                    (this.location == null || this.location.isEmpty() || item.getLocation().toLowerCase().contains(this.location.toLowerCase())) &&
+                    (this.startDate == null || this.endDate == null ||
+                            (item.parseDateLostAsDate().after(this.startDate) && item.parseDateLostAsDate().before(this.endDate)))) {
+                filteredList.add(item);
+            }
+        }
         applySort();
     }
 
@@ -131,26 +137,24 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     }
 
     private void applySort() {
-        filteredList = Arrays.stream(filteredList)
-                .sorted((item1, item2) -> {
-                    switch (this.sortBy) {
-                        case 1: // Oldest Post
-                            return item1.parseDateLostAsDate().compareTo(item2.parseDateLostAsDate());
-                        case 2: // A-Z
-                            return item1.getName().compareToIgnoreCase(item2.getName());
-                        case 3: // Z-A
-                            return item2.getName().compareToIgnoreCase(item1.getName());
-                        default: // Newest Post
-                            return item2.parseDateLostAsDate().compareTo(item1.parseDateLostAsDate());
-                    }
-                })
-                .toArray(LostItem[]::new);
+        Collections.sort(filteredList, (item1, item2) -> {
+            switch (this.sortBy) {
+                case 1: // Oldest Post
+                    return item1.parseDateLostAsDate().compareTo(item2.parseDateLostAsDate());
+                case 2: // A-Z
+                    return item1.getName().compareToIgnoreCase(item2.getName());
+                case 3: // Z-A
+                    return item2.getName().compareToIgnoreCase(item1.getName());
+                default: // Newest Post
+                    return item2.parseDateLostAsDate().compareTo(item1.parseDateLostAsDate());
+            }
+        });
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return filteredList.length;
+        return filteredList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
