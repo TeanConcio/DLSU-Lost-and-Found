@@ -9,14 +9,16 @@ public class LostItem extends Item {
 
     private String dateLost;
 
-    public LostItem(String name,
+    public LostItem(String id,
+                    String name,
                     Category category,
                     String description,
                     String campus,
                     String location,
                     Integer image,
                     String dateLost) {
-        super(name,
+        super(id,
+                name,
                 ItemStatus.LOST,
                 category,
                 description,

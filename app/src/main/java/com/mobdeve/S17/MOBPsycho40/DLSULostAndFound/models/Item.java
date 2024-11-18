@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public abstract class Item {
-
+    private String id;
     private String name;
     private ItemStatus status;
     private Category category;
@@ -20,13 +20,15 @@ public abstract class Item {
         // No-argument constructor for Firebase
     }
 
-    public Item(String name,
+    public Item(String id,
+                String name,
                 ItemStatus status,
                 Category category,
                 String description,
                 String campus,
                 String location,
                 Integer image) {
+        this.id = id;
         this.name = name;
         this.status = status;
         this.category = category;
@@ -41,6 +43,9 @@ public abstract class Item {
     /*
         Getters and Setters
     */
+
+    public String getId() { return this.id; }
+    public void setId(String id) { this.id = id; }
 
     public String getName() {
         return this.name;

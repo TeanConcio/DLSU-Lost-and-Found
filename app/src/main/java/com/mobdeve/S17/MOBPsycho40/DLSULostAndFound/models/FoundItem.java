@@ -13,14 +13,16 @@ public class FoundItem extends Item {
         super();
     }
 
-    public FoundItem(String name,
+    public FoundItem(String id,
+                     String name,
                      Category category,
                      String description,
                      String campus,
                      String location,
                      Integer image,
                      String dateFound) {
-        super(name,
+        super(id,
+                name,
                 ItemStatus.FOUND,
                 category,
                 description,
