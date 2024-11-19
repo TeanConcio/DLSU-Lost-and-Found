@@ -19,11 +19,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.Firebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ItemActivity extends AppCompatActivity {
     TextView itemName, itemCategory, itemLocation, itemDate, itemDescription, itemCampus, itemStatus;
     ImageView itemImage;
 
-    Button btn_claim_item, btn_update_item;
+    Button btn_delete_item, btn_update_item;
 
     CardView itemStatusCard;
 
@@ -67,12 +71,12 @@ public class ItemActivity extends AppCompatActivity {
         itemDescription = findViewById(R.id.itemDescription);
         itemCampus = findViewById(R.id.itemCampus);
         itemStatusCard = findViewById(R.id.itemStatusCard);
-        btn_claim_item = findViewById(R.id.btn_claim_item);
+        btn_delete_item = findViewById(R.id.btn_delete_item);
         btn_update_item = findViewById(R.id.btn_update_item);
 
         if (!sharedPreferences.getBoolean("isLoggedIn", false)){
             btn_update_item.setVisibility(Button.GONE);
-            btn_claim_item.setVisibility(Button.GONE);
+            btn_delete_item.setVisibility(Button.GONE);
         }
 
         Intent i = getIntent();
@@ -89,7 +93,7 @@ public class ItemActivity extends AppCompatActivity {
         if (itemStatus.getText().toString().equals("Lost")){
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.red_200));
             itemStatus.setTextColor(getResources().getColor(R.color.red_700));
-            btn_claim_item.setVisibility(Button.GONE);
+            btn_delete_item.setVisibility(Button.GONE);
         }
         else if (itemStatus.getText().toString().equals("Found")){
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.green_200));
@@ -98,33 +102,22 @@ public class ItemActivity extends AppCompatActivity {
             if (!sharedPreferences.getBoolean("isAdmin", false)) {
                 btn_update_item.setVisibility(Button.GONE);
             }else{
-                btn_claim_item.setVisibility(Button.VISIBLE);
+                btn_delete_item.setVisibility(Button.VISIBLE);
             }
             
         } else{
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
-            btn_claim_item.setVisibility(Button.GONE);
+            btn_delete_item.setVisibility(Button.GONE);
             //btn_update_item.setVisibility(Button.GONE);
         }
 
         btn_update_item.setOnClickListener(v -> {
             Intent intent = new Intent(ItemActivity.this, UpdateFoundActivity.class);
-//            intent.putExtra("id", itemID);
-//            intent.putExtra("image",i.getIntExtra("image",0));
-//            intent.putExtra("name",i.getStringExtra("name"));
-//            intent.putExtra("status",i.getStringExtra("status"));
-//            intent.putExtra("category",i.getStringExtra("category"));
-//            intent.putExtra("date",i.getStringExtra("date"));
-//            intent.putExtra("campus", i.getStringExtra("campus"));
-//            intent.putExtra("location",i.getStringExtra("location"));
-//            intent.putExtra("description", i.getStringExtra("description"));
-
             String category = itemCategory.getText().toString();
             if (category != null) {
                 category = category.replace(" ", "_");
             }
-
             intent.putExtra("id", itemID);
             intent.putExtra("image", i.getIntExtra("image", 0));
             intent.putExtra("name", itemName.getText().toString());
@@ -136,25 +129,36 @@ public class ItemActivity extends AppCompatActivity {
             intent.putExtra("description", itemDescription.getText().toString());
             updateItemLauncher.launch(intent);
         });
+
+        btn_delete_item.setOnClickListener(v -> {
+            if (itemID != null) {
+                DatabaseReference dR = FirebaseDatabase.getInstance().getReference("foundItems").child(itemID);
+                dR.removeValue();
+                Toast.makeText(getApplicationContext(), "Item deleted successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+
+        });
     }
 
     private void updateStatusCard(String status) {
         if ("Lost".equals(status)) {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.red_200));
             itemStatus.setTextColor(getResources().getColor(R.color.red_700));
-            btn_claim_item.setVisibility(Button.GONE);
+            btn_delete_item.setVisibility(Button.GONE);
         } else if ("Found".equals(status)) {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.green_200));
             itemStatus.setTextColor(getResources().getColor(R.color.green_700));
             if (!sharedPreferences.getBoolean("isAdmin", false)) {
                 btn_update_item.setVisibility(Button.GONE);
             } else {
-                btn_claim_item.setVisibility(Button.VISIBLE);
+                btn_delete_item.setVisibility(Button.VISIBLE);
             }
         } else {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
-            btn_claim_item.setVisibility(Button.GONE);
+            btn_delete_item.setVisibility(Button.GONE);
         }
     }
 

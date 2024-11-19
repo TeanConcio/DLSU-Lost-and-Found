@@ -231,13 +231,13 @@
                         tools:ignore="HardcodedText" />
 
                     <Button
-                        android:id="@+id/btn_claim_item"
+                        android:id="@+id/btn_delete_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="Mark as Claimed"
+                        android:text="Delete"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
