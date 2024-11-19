@@ -16,19 +16,17 @@ public enum Category {
 
     // Returns the category enum as a string while removing the underscores and capitalizing the first letter of each word
     public String getString() {
-        String categoryString = this.toString().toLowerCase();
-        String[] words = categoryString.split("_");
+        String categoryString = this.toString().toLowerCase().replace("_", " ");
+        String[] words = categoryString.split(" ");
         StringBuilder capitalized = new StringBuilder();
 
         for (String word : words) {
             capitalized.append(Character.toUpperCase(word.charAt(0)))
-                    .append(word.substring(1)).append("_");
+                    .append(word.substring(1)).append(" ");
         }
 
-        // Remove the trailing underscore and return the result
-        return capitalized.substring(0, capitalized.length() - 1);
+        return capitalized.toString().trim();
     }
-
 
     // Returns the icon resource id of the category
     public int getIcon() {

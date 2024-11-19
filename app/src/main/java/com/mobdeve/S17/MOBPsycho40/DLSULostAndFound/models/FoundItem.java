@@ -24,7 +24,7 @@ public class FoundItem extends Item {
                      String dateFound) {
         super(id,
                 name,
-                ItemStatus.Found,
+                status,
                 category,
                 description,
                 campus,

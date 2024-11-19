@@ -67,6 +67,7 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
 
         holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, ItemActivity.class);
+            i.putExtra("id", currentItem.getId());
             i.putExtra("image", currentItem.getImage());
             i.putExtra("name", currentItem.getName());
             i.putExtra("status", currentItem.getStatus().getString());

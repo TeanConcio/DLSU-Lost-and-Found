@@ -78,13 +78,14 @@ public class CreateLostActivity extends AppCompatActivity {
                     this,
                     R.style.CustomDatePickerDialog,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        // Format the date as MM/dd/yyyy
+                        String date = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
                         inputDate.setText(date);
                     },
                     year, month, day
             );
-
             datePickerDialog.show();
         });
     }
+
 }

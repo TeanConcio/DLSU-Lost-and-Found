@@ -35,9 +35,9 @@
         <item>Other_Items</item>
     </string-array>
 
-    <string-array name="status">
-        <item>Lost</item>
+    <string-array name="statusFound">
         <item>Found</item>
+        <item>Claimed</item>
     </string-array>
 
 

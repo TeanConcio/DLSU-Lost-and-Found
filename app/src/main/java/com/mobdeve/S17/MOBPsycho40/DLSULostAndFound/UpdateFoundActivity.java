@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +14,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.ActivityUpdateFoundBinding;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 
 import java.util.Calendar;
 
 public class UpdateFoundActivity extends AppCompatActivity {
 
     private ActivityUpdateFoundBinding binding;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +48,66 @@ public class UpdateFoundActivity extends AppCompatActivity {
         binding.inputLocation.setText(i.getStringExtra("location"));
         binding.inputDescription.setText(i.getStringExtra("description"));
         binding.inputDate.setText(i.getStringExtra("date"));
-        //fix next time for status, category, and campus
 
         String status = i.getStringExtra("status");
         String category = i.getStringExtra("category");
+        if (category != null) {
+            category = category.replace(" ", "_");
+        }
         String campus = i.getStringExtra("campus");
 
         setupDropdowns(status, category, campus);
         setupDatePicker();
 
         binding.btnUpdateFoundItem.setOnClickListener(v -> {
-            finish();
+            updateFoundItem();
         });
+
+    }
+
+    private void updateFoundItem () {
+        String id = getIntent().getStringExtra("id");
+        String title = binding.inputTitle.getText().toString();
+        String location = binding.inputLocation.getText().toString();
+        String description = binding.inputDescription.getText().toString();
+        String date = binding.inputDate.getText().toString();
+        String statusStr = binding.spinnerStatus.getSelectedItem().toString();
+        String categoryStr = binding.spinnerCategory.getSelectedItem().toString();
+        String campus = binding.spinnerCampus.getSelectedItem().toString();
+
+        Category category;
+        try {
+            category = Category.valueOf(categoryStr);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Invalid category selected.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ItemStatus status;
+        try {
+            status = ItemStatus.valueOf(statusStr);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Invalid status selected.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("foundItems").child(id);
+
+        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, 0, date);
+        dR.setValue(foundItem);
+        Toast.makeText(this, "Item updated", Toast.LENGTH_LONG).show();
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("name", title);
+        resultIntent.putExtra("location", location);
+        resultIntent.putExtra("description", description);
+        resultIntent.putExtra("date", date);
+        resultIntent.putExtra("status", statusStr);
+        resultIntent.putExtra("category", categoryStr);
+        resultIntent.putExtra("campus", campus);
+
+        setResult(RESULT_OK, resultIntent);
+        finish();
 
     }
 
@@ -90,7 +146,7 @@ public class UpdateFoundActivity extends AppCompatActivity {
         Spinner statusSpinner = binding.spinnerStatus;
         ArrayAdapter<CharSequence> adapterStatus = ArrayAdapter.createFromResource(
                 getApplicationContext(),
-                R.array.status,
+                R.array.statusFound,
                 android.R.layout.simple_spinner_item
         );
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,20 +161,39 @@ public class UpdateFoundActivity extends AppCompatActivity {
         TextView inputDate = binding.inputDate;
         inputDate.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
+
+            // Check if the date string is not empty
+            String dateStr = inputDate.getText().toString();
+            if (!dateStr.isEmpty()) {
+                // Parse the date string (assumed format: MM/dd/yyyy)
+                String[] dateParts = dateStr.split("/");
+                int month = Integer.parseInt(dateParts[0]) - 1; // Month is 0-indexed
+                int day = Integer.parseInt(dateParts[1]);
+                int year = Integer.parseInt(dateParts[2]);
+
+                // Set the calendar to the parsed date
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+            }
+
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    getApplicationContext(),
+                    this,
                     R.style.CustomDatePickerDialog,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        // Format the date as MM/dd/yyyy
+                        String date = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
                         inputDate.setText(date);
                     },
-                    year, month, day);
-
+                    year, month, day
+            );
             datePickerDialog.show();
         });
     }
+
+
 }
