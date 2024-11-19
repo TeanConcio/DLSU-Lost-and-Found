@@ -42,16 +42,21 @@ public class UpdateFoundActivity extends AppCompatActivity {
         binding.inputDate.setText(i.getStringExtra("date"));
         //fix next time for status, category, and campus
 
+        String status = i.getStringExtra("status");
+        String category = i.getStringExtra("category");
+        String campus = i.getStringExtra("campus");
+
+        setupDropdowns(status, category, campus);
+        setupDatePicker();
+
         binding.btnUpdateFoundItem.setOnClickListener(v -> {
             finish();
         });
 
-        setupDropdowns();
-        setupDatePicker();
     }
 
-    private void setupDropdowns() {
-        // Sample data for dropdowns
+    private void setupDropdowns(String status, String category, String campus) {
+        // Setup campus spinner
         Spinner campusSpinner = binding.spinnerCampus;
         ArrayAdapter<CharSequence> adapterCampus = ArrayAdapter.createFromResource(
                 getApplicationContext(),
@@ -60,7 +65,13 @@ public class UpdateFoundActivity extends AppCompatActivity {
         );
         adapterCampus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         campusSpinner.setAdapter(adapterCampus);
+        // Set the selection based on the campus value
+        int campusPosition = adapterCampus.getPosition(campus);
+        if (campusPosition >= 0) {
+            campusSpinner.setSelection(campusPosition);
+        }
 
+        // Setup category spinner
         Spinner categorySpinner = binding.spinnerCategory;
         ArrayAdapter<CharSequence> adapterCategory = ArrayAdapter.createFromResource(
                 getApplicationContext(),
@@ -69,7 +80,13 @@ public class UpdateFoundActivity extends AppCompatActivity {
         );
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapterCategory);
+        // Set the selection based on the category value
+        int categoryPosition = adapterCategory.getPosition(category);
+        if (categoryPosition >= 0) {
+            categorySpinner.setSelection(categoryPosition);
+        }
 
+        // Setup status spinner
         Spinner statusSpinner = binding.spinnerStatus;
         ArrayAdapter<CharSequence> adapterStatus = ArrayAdapter.createFromResource(
                 getApplicationContext(),
@@ -78,8 +95,12 @@ public class UpdateFoundActivity extends AppCompatActivity {
         );
         adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(adapterStatus);
+        // Set the selection based on the status value
+        int statusPosition = adapterStatus.getPosition(status);
+        if (statusPosition >= 0) {
+            statusSpinner.setSelection(statusPosition);
+        }
     }
-
     private void setupDatePicker() {
         TextView inputDate = binding.inputDate;
         inputDate.setOnClickListener(v -> {
