@@ -3,52 +3,53 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 
 public enum Category {
-    ELECTRONICS,
-    ACCESSORIES,
-    CONTAINERS,
-    ESSENTIALS,
-    CLOTHES,
-    STATIONERIES,
-    BOOKS,
-    SPORTS_EQUIPMENT,
-    OTHER_ITEMS;
-
+    Electronics,
+    Accessories,
+    Containers,
+    Essentials,
+    Clothes,
+    Stationaries,
+    Books,
+    Sports_Equipment,
+    Other_Items;
 
 
     // Returns the category enum as a string while removing the underscores and capitalizing the first letter of each word
     public String getString() {
-        String categoryString = this.toString().toLowerCase().replace("_", " ");
-        String[] words = categoryString.split(" ");
+        String categoryString = this.toString().toLowerCase();
+        String[] words = categoryString.split("_");
         StringBuilder capitalized = new StringBuilder();
 
         for (String word : words) {
             capitalized.append(Character.toUpperCase(word.charAt(0)))
-                    .append(word.substring(1)).append(" ");
+                    .append(word.substring(1)).append("_");
         }
 
-        return capitalized.toString().trim();
+        // Remove the trailing underscore and return the result
+        return capitalized.substring(0, capitalized.length() - 1);
     }
+
 
     // Returns the icon resource id of the category
     public int getIcon() {
         switch (this) {
-            case ELECTRONICS:
+            case Electronics:
                 return R.drawable.ic_electronics;
-            case ACCESSORIES:
+            case Accessories:
                 return R.drawable.ic_accessories;
-            case CONTAINERS:
+            case Containers:
                 return R.drawable.ic_containers;
-            case ESSENTIALS:
+            case Essentials:
                 return R.drawable.ic_essentials;
-            case CLOTHES:
+            case Clothes:
                 return R.drawable.ic_clothes;
-            case STATIONERIES:
+            case Stationaries:
                 return R.drawable.ic_stationeries;
-            case BOOKS:
+            case Books:
                 return R.drawable.ic_books;
-            case SPORTS_EQUIPMENT:
+            case Sports_Equipment:
                 return R.drawable.ic_sports_equipment;
-            case OTHER_ITEMS:
+            case Other_Items:
                 return R.drawable.ic_other_items;
             default:
                 return 0;

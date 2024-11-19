@@ -15,6 +15,7 @@ public class FoundItem extends Item {
 
     public FoundItem(String id,
                      String name,
+                     ItemStatus status,
                      Category category,
                      String description,
                      String campus,
@@ -23,7 +24,7 @@ public class FoundItem extends Item {
                      String dateFound) {
         super(id,
                 name,
-                ItemStatus.FOUND,
+                ItemStatus.Found,
                 category,
                 description,
                 campus,

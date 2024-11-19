@@ -1,17 +1,17 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models;
 
 public enum ItemStatus {
-    LOST,
-    FOUND,
-    CLAIMED;
+    Lost,
+    Found,
+    Claimed;
 
     public String getString() {
         switch (this) {
-            case LOST:
+            case Lost:
                 return "Lost";
-            case FOUND:
+            case Found:
                 return "Found";
-            case CLAIMED:
+            case Claimed:
                 return "Claimed";
             default:
                 return "";

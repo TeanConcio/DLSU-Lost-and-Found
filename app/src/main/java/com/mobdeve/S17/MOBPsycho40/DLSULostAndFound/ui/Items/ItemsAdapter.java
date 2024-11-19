@@ -48,7 +48,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         holder.lostItemLocation.setText(currentItem.getLocation());
         holder.itemStatus.setText(currentItem.getStatus().getString());
 
-        if (currentItem.getStatus() == ItemStatus.LOST) {
+        if (currentItem.getStatus() == ItemStatus.Lost) {
             holder.itemStatusCard.setCardBackgroundColor(context.getResources().getColor(R.color.red_200));
             holder.itemStatus.setTextColor(context.getResources().getColor(R.color.red_700));
         } else {

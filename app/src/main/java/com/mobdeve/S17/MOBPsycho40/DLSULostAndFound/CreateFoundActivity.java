@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.ActivityCreateFoundBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 
 import java.util.Calendar;
 
@@ -72,6 +73,7 @@ public class CreateFoundActivity extends AppCompatActivity {
     private void addFoundItem() {
         String title = input_title.getText().toString().trim();
         String location = input_location.getText().toString().trim();
+        ItemStatus status = ItemStatus.Found;
         String description = input_description.getText().toString().trim();
         String campus = spinner_campus.getSelectedItem().toString();
         String categoryStr = spinner_category.getSelectedItem().toString();
@@ -80,7 +82,7 @@ public class CreateFoundActivity extends AppCompatActivity {
         // Validate the category
         Category category;
         try {
-            category = Category.valueOf(categoryStr.toUpperCase());
+            category = Category.valueOf(categoryStr);
         } catch (IllegalArgumentException e) {
             Toast.makeText(this, "Invalid category selected.", Toast.LENGTH_SHORT).show();
             return;
@@ -113,7 +115,7 @@ public class CreateFoundActivity extends AppCompatActivity {
 
         // Add the found item
         String id = databaseFoundItems.push().getKey();
-        FoundItem foundItem = new FoundItem(id, title, category, description, campus, location, 0, dateStr);
+        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, 0, dateStr);
 
         databaseFoundItems.child(id).setValue(foundItem);
 

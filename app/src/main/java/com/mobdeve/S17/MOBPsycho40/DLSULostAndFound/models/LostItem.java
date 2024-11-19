@@ -19,7 +19,7 @@ public class LostItem extends Item {
                     String dateLost) {
         super(id,
                 name,
-                ItemStatus.LOST,
+                ItemStatus.Lost,
                 category,
                 description,
                 campus,
