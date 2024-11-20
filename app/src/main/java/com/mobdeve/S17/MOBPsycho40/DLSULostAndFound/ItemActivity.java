@@ -39,7 +39,7 @@ public class ItemActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     if (data != null) {
                         itemName.setText(data.getStringExtra("name"));
-                        itemCategory.setText(data.getStringExtra("category").replace("_", " "));
+                        itemCategory.setText(data.getStringExtra("category"));
                         itemStatus.setText(data.getStringExtra("status"));
                         itemCampus.setText(data.getStringExtra("campus"));
                         itemLocation.setText(data.getStringExtra("location"));
@@ -114,15 +114,12 @@ public class ItemActivity extends AppCompatActivity {
 
         btn_update_item.setOnClickListener(v -> {
             Intent intent = new Intent(ItemActivity.this, UpdateFoundActivity.class);
-            String category = itemCategory.getText().toString();
-            if (category != null) {
-                category = category.replace(" ", "_");
-            }
+
             intent.putExtra("id", itemID);
             intent.putExtra("image", i.getIntExtra("image", 0));
             intent.putExtra("name", itemName.getText().toString());
             intent.putExtra("status", itemStatus.getText().toString());
-            intent.putExtra("category", category);
+            intent.putExtra("category", itemCategory.getText().toString());
             intent.putExtra("date", itemDate.getText().toString());
             intent.putExtra("campus", itemCampus.getText().toString());
             intent.putExtra("location", itemLocation.getText().toString());

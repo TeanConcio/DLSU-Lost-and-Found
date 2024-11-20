@@ -6,7 +6,6 @@
     <string name="title_profile">Profile</string>
 
     <string-array name="campus">
-        <item>All</item>
         <item>Manila</item>
         <item>BGC</item>
         <item>Laguna</item>
@@ -31,8 +30,8 @@
         <item>Clothes</item>
         <item>Stationaries</item>
         <item>Books</item>
-        <item>Sports_Equipment</item>
-        <item>Other_Items</item>
+        <item>Sports</item>
+        <item>Others</item>
     </string-array>
 
     <string-array name="statusFound">

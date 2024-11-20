@@ -51,9 +51,6 @@ public class UpdateFoundActivity extends AppCompatActivity {
 
         String status = i.getStringExtra("status");
         String category = i.getStringExtra("category");
-        if (category != null) {
-            category = category.replace(" ", "_");
-        }
         String campus = i.getStringExtra("campus");
 
         setupDropdowns(status, category, campus);

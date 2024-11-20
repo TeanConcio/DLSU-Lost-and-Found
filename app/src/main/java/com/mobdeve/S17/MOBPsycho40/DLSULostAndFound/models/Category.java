@@ -10,22 +10,13 @@ public enum Category {
     Clothes,
     Stationaries,
     Books,
-    Sports_Equipment,
-    Other_Items;
+    Sports,
+    Others;
 
 
     // Returns the category enum as a string while removing the underscores and capitalizing the first letter of each word
     public String getString() {
-        String categoryString = this.toString().toLowerCase().replace("_", " ");
-        String[] words = categoryString.split(" ");
-        StringBuilder capitalized = new StringBuilder();
-
-        for (String word : words) {
-            capitalized.append(Character.toUpperCase(word.charAt(0)))
-                    .append(word.substring(1)).append(" ");
-        }
-
-        return capitalized.toString().trim();
+        return this.toString();
     }
 
     // Returns the icon resource id of the category
@@ -45,9 +36,9 @@ public enum Category {
                 return R.drawable.ic_stationeries;
             case Books:
                 return R.drawable.ic_books;
-            case Sports_Equipment:
+            case Sports:
                 return R.drawable.ic_sports_equipment;
-            case Other_Items:
+            case Others:
                 return R.drawable.ic_other_items;
             default:
                 return 0;

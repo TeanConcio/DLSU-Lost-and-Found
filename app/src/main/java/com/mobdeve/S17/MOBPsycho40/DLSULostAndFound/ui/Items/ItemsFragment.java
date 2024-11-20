@@ -5,20 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentItemsBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
-import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost.LostItemAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +46,7 @@ public class ItemsFragment extends Fragment {
         LostItem[] lostItemList = new LostItem[]{
                 new LostItem("1","Black Leather Wallet", Category.Essentials, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
                 new LostItem("2","Green Hoodie", Category.Clothes, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
-                new LostItem("3","Running Shoes", Category.Sports_Equipment, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, formatter.format(new Date()))
+                new LostItem("3","Running Shoes", Category.Sports, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, formatter.format(new Date()))
         };
         lostItemList[2].setStatus(ItemStatus.Claimed);
 
