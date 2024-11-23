@@ -19,14 +19,15 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
-    LostItem[] myLostItemList;
+    private ArrayList<LostItem> myLostItemList;
     Context context;
 
-    public ItemsAdapter(LostItem[] lostItemList, FragmentActivity activity) {
-        this.myLostItemList = lostItemList;
+    public ItemsAdapter(ArrayList<LostItem> lostItemList, FragmentActivity activity) {
+        this.myLostItemList = new ArrayList<>(lostItemList);
         this.context = activity;
     }
 
@@ -41,7 +42,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position) {
-        final LostItem currentItem = myLostItemList[position];
+        final LostItem currentItem = myLostItemList.get(position);
         holder.lostItemImage.setImageResource(currentItem.getImage());
         holder.lostItemName.setText(currentItem.getName());
         holder.lostItemDate.setText(currentItem.getDateLost());
@@ -62,6 +63,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             public void onClick(View v) {
                 //Toast.makeText(context, "Display " + currentItem.getName() + " information", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, ItemActivity.class);
+                i.putExtra("id",currentItem.getId());
                 i.putExtra("image",currentItem.getImage());
                 i.putExtra("name",currentItem.getName());
                 i.putExtra("status",currentItem.getStatus().getString());
@@ -70,6 +72,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());
                 i.putExtra("description", currentItem.getDescription());
+                i.putExtra("userID", currentItem.getUserID());
                 context.startActivity(i);
             }
         });
@@ -77,7 +80,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return myLostItemList.length;
+        return myLostItemList.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -100,6 +103,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             itemStatusCard = itemView.findViewById(R.id.itemStatusCard);
 
         }
+    }
+
+    public void updateData(ArrayList<LostItem> newLostItemList) {
+        this.myLostItemList.clear();
+        this.myLostItemList.addAll(newLostItemList);
+        notifyDataSetChanged(); // Notify RecyclerView about the data change
     }
 
 

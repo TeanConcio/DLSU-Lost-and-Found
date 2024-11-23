@@ -8,7 +8,11 @@ import java.util.Locale;
 public class LostItem extends Item {
 
     private String dateLost;
+    private String userID;
 
+    public LostItem() {
+        super(); // Call the no-argument constructor of the parent class
+    }
     public LostItem(String id,
                     String name,
                     Category category,
@@ -16,7 +20,8 @@ public class LostItem extends Item {
                     String campus,
                     String location,
                     Integer image,
-                    String dateLost) {
+                    String dateLost,
+                    String userID) {
         super(id,
                 name,
                 ItemStatus.Lost,
@@ -27,9 +32,8 @@ public class LostItem extends Item {
                 image);
 
         this.dateLost = dateLost;
+        this.userID = userID;
     }
-
-
 
     /*
         Getters and Setters
@@ -49,5 +53,13 @@ public class LostItem extends Item {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    public String getUserID() { // Getter for userID
+        return this.userID;
+    }
+    public void setUserID(String userID) { // Setter for userID
+        this.userID = userID;
     }
 }

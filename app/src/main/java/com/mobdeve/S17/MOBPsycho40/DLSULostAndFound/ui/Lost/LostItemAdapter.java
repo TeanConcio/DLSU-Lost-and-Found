@@ -70,6 +70,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
             public void onClick(View v) {
                 //Toast.makeText(context, "Display " + currentItem.getName() + " information", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, ItemActivity.class);
+                i.putExtra("id", currentItem.getId());
                 i.putExtra("image",currentItem.getImage());
                 i.putExtra("name",currentItem.getName());
                 i.putExtra("status",currentItem.getStatus().getString());
@@ -78,6 +79,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
                 i.putExtra("campus", currentItem.getCampus());
                 i.putExtra("location",currentItem.getLocation());
                 i.putExtra("description", currentItem.getDescription());
+                i.putExtra("userID", currentItem.getUserID());
                 context.startActivity(i);
             }
         });
@@ -173,6 +175,14 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
             lostItemLocation = itemView.findViewById(R.id.lostItemLocation);
             lostItemDescription = itemView.findViewById(R.id.lostItemDescription);
         }
+    }
+
+    public void updateData(ArrayList<LostItem> newLostItemList) {
+        this.lostItemList.clear();
+        this.lostItemList.addAll(newLostItemList); // Update data
+        this.filteredList.clear();
+        this.filteredList.addAll(newLostItemList); // Update data
+        this.applyFilters();
     }
 
 }

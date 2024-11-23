@@ -3,11 +3,14 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +18,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.ActivityCreateLostBinding;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
+import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
 import java.util.Calendar;
 
 public class CreateLostActivity extends AppCompatActivity {
+
+    DatabaseReference databaseLostItems;
+
+    EditText input_title, input_location, input_description;
+    Spinner spinner_campus, spinner_category;
+    TextView input_date;
+
+    private SharedPreferences sharedPreferences;
+
 
     private ActivityCreateLostBinding binding;
 
@@ -28,8 +45,21 @@ public class CreateLostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+
+        databaseLostItems = FirebaseDatabase.getInstance().getReference("lostItems");
+
+        sharedPreferences = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+
         binding = ActivityCreateLostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // getting views
+        input_title = binding.inputTitle;
+        input_location = binding.inputLocation;
+        input_description = binding.inputDescription;
+        spinner_campus = binding.spinnerCampus;
+        spinner_category = binding.spinnerCategory;
+        input_date = binding.inputDate;
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -38,12 +68,69 @@ public class CreateLostActivity extends AppCompatActivity {
         });
 
         binding.btnAddLostItem.setOnClickListener(v -> {
-            finish();
+            addLostItem();
         });
 
         setupDropdowns();
         setupDatePicker();
     }
+
+    protected void addLostItem(){
+        String title = input_title.getText().toString().trim();
+        String location = input_location.getText().toString().trim();
+        String description = input_description.getText().toString().trim();
+        String campus = spinner_campus.getSelectedItem().toString();
+        String categoryStr = spinner_category.getSelectedItem().toString();
+        String dateStr = input_date.getText().toString().trim();
+        String userID = sharedPreferences.getString("userID", "");
+
+        Category category;
+        try {
+            category = Category.valueOf(categoryStr);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Invalid category selected.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Validate input fields
+
+        if (title.isEmpty()) {
+            input_title.setError("Title is required");
+            input_title.requestFocus();
+            return;
+        }
+        if (location.isEmpty()) {
+            input_location.setError("Location is required");
+            input_location.requestFocus();
+            return;
+        }
+
+        if (description.isEmpty()) {
+            input_description.setError("Description is required");
+            input_description.requestFocus();
+            return;
+        }
+
+        if (dateStr.isEmpty()) {
+            input_date.setError("Date is required");
+            input_date.requestFocus();
+            return;
+        }
+
+        //Add the found item
+        String id = databaseLostItems.push().getKey();
+        LostItem lostItem = new LostItem(id, title, category, description, campus, location, 0, dateStr, userID);
+
+        databaseLostItems.child(id).setValue(lostItem);
+
+        input_title.setText("");
+        input_location.setText("");
+        input_description.setText("");
+        input_date.setText("");
+        Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
+        finish();
+
+    };
 
     private void setupDropdowns() {
         // Sample data for dropdowns

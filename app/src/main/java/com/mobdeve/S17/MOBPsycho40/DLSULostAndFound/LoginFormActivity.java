@@ -81,6 +81,7 @@ public class LoginFormActivity extends AppCompatActivity {
 
                                 reference.get().addOnCompleteListener(userTask -> {
                                     if (userTask.isSuccessful() && userTask.getResult().exists()) {
+
                                         String idNumber = userTask.getResult().child("idNumber").getValue(String.class);
                                         String firstName = userTask.getResult().child("firstName").getValue(String.class);
                                         String lastName = userTask.getResult().child("lastName").getValue(String.class);
@@ -89,6 +90,7 @@ public class LoginFormActivity extends AppCompatActivity {
 
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putBoolean("isLoggedIn", true);
+                                        editor.putString("userID", userId);
                                         editor.putString("idNumber", idNumber);
                                         editor.putString("firstName", firstName);
                                         editor.putString("lastName", lastName);

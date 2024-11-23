@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -39,6 +40,13 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.R;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.FragmentLostBinding;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
+
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collections;
 import java.text.SimpleDateFormat;
@@ -93,23 +101,23 @@ public class LostFragment extends Fragment {
         this.makeCategoryFilters();
 
 
-        lostItemList = new ArrayList<>();
         // Data and Date Format
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        Collections.addAll(lostItemList,
-                new LostItem("01","iPad Pro 2021", Category.Electronics, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, formatter.format(new Date())),
-                new LostItem("02","Black Leather Wallet", Category.Essentials, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
-                new LostItem("03","Green Hoodie", Category.Clothes, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
-                new LostItem("04","Mathematics Notebook", Category.Stationaries, "A spiral-bound notebook with 'Math 101' written on the cover. Contains detailed notes.", "Laguna", "Found under a desk in the lecture hall", R.drawable.sample_math_notebook, formatter.format(new Date())),
-                new LostItem("05","Blue Water Bottle", Category.Essentials, "A stainless steel blue water bottle. No visible brand. Slight dent on the side.", "Off-Campus", "Found near the basketball court", R.drawable.sample_blue_bottle, formatter.format(new Date())),
-                new LostItem("06","iPhone 16 Pro Max", Category.Electronics, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, formatter.format(new Date())),
-                new LostItem("07","Running Shoes", Category.Sports, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, formatter.format(new Date())),
-                new LostItem("08","Physics Textbook", Category.Books, "A hardcover Physics textbook, 'Fundamentals of Physics'. Owner's name is inside: 'Sarah'.", "Laguna", "Found on a study table in the student center", R.drawable.sample_physics_textbook, formatter.format(new Date())),
-                new LostItem("09","Umbrella", Category.Others, "A small black foldable umbrella with a red handle.", "BGC", "Left in the restroom", R.drawable.sample_umbrella, formatter.format(new Date())),
-                new LostItem("10","Glasses Case", Category.Accessories, "A black hard-shell glasses case. Contains prescription glasses.", "Off-Campus", "Found at the reception counter of a coffee shop", R.drawable.sample_glasses_case, formatter.format(new Date())),
-                new LostItem("11","Brown Leather Belt", Category.Accessories, "A brown leather belt with a silver buckle. Slightly worn but in good condition.", "Manila", "Found hanging on a chair in the cafeteria", R.drawable.sample_brown_leather_belt, formatter.format(new Date())),
-                new LostItem("12","Canvas Tote Bag", Category.Containers, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, formatter.format(new Date()))
-        );
+//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//        Collections.addAll(lostItemList,
+//                new LostItem("01","iPad Pro 2021", Category.Electronics, "It is the ipad owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_ipad_pro_2021, formatter.format(new Date())),
+//                new LostItem("02","Black Leather Wallet", Category.Essentials, "A small black wallet with a few cards and cash. Owner's ID says 'John Dela Cruz'.", "Manila", "Found on the table near the cafeteria entrance", R.drawable.sample_black_wallet, formatter.format(new Date())),
+//                new LostItem("03","Green Hoodie", Category.Clothes, "A green hoodie with the DLSU logo. It looks slightly worn but in good condition.", "BGC", "Found draped over a chair in the library", R.drawable.sample_green_hoodie, formatter.format(new Date())),
+//                new LostItem("04","Mathematics Notebook", Category.Stationaries, "A spiral-bound notebook with 'Math 101' written on the cover. Contains detailed notes.", "Laguna", "Found under a desk in the lecture hall", R.drawable.sample_math_notebook, formatter.format(new Date())),
+//                new LostItem("05","Blue Water Bottle", Category.Essentials, "A stainless steel blue water bottle. No visible brand. Slight dent on the side.", "Off-Campus", "Found near the basketball court", R.drawable.sample_blue_bottle, formatter.format(new Date())),
+//                new LostItem("06","iPhone 16 Pro Max", Category.Electronics, "It is the phone owned by the one and only Gojo \"Dominic Sia\" Satoru. It has a blue, red, and purple design and contains LIMITLESS (Cursed) Energy", "Manila", "Henry Sy", R.drawable.sample_iphone16_pro_max, formatter.format(new Date())),
+//                new LostItem("07","Running Shoes", Category.Sports, "A pair of red Adidas running shoes, size 8. Slightly worn out.", "Manila", "Found in the gym locker room", R.drawable.sample_running_shoes, formatter.format(new Date())),
+//                new LostItem("08","Physics Textbook", Category.Books, "A hardcover Physics textbook, 'Fundamentals of Physics'. Owner's name is inside: 'Sarah'.", "Laguna", "Found on a study table in the student center", R.drawable.sample_physics_textbook, formatter.format(new Date())),
+//                new LostItem("09","Umbrella", Category.Others, "A small black foldable umbrella with a red handle.", "BGC", "Left in the restroom", R.drawable.sample_umbrella, formatter.format(new Date())),
+//                new LostItem("10","Glasses Case", Category.Accessories, "A black hard-shell glasses case. Contains prescription glasses.", "Off-Campus", "Found at the reception counter of a coffee shop", R.drawable.sample_glasses_case, formatter.format(new Date())),
+//                new LostItem("11","Brown Leather Belt", Category.Accessories, "A brown leather belt with a silver buckle. Slightly worn but in good condition.", "Manila", "Found hanging on a chair in the cafeteria", R.drawable.sample_brown_leather_belt, formatter.format(new Date())),
+//                new LostItem("12","Canvas Tote Bag", Category.Containers, "A white canvas tote bag with a floral design. Contains a few books and snacks.", "Laguna", "Left in Room 201 of the science building", R.drawable.sample_canvas_totebag, formatter.format(new Date()))
+//        );
+        lostItemList = new ArrayList<>();
 
         // RecyclerView and Adapter
         binding.lostItemRecycler.setHasFixedSize(true);
@@ -149,6 +157,35 @@ public class LostFragment extends Fragment {
         });
 
         return root;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchLostItemsFromDatabase();
+    }
+
+    private void fetchLostItemsFromDatabase(){
+        DatabaseReference databaseLostItems = FirebaseDatabase.getInstance().getReference("lostItems");
+        databaseLostItems.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<LostItem> lostItemList = new ArrayList<>();
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    LostItem lostItem = postSnapshot.getValue(LostItem.class);
+                    if (lostItem != null) {
+                        lostItemList.add(lostItem);
+                    }
+                }
+                lostItemAdapter.updateData(lostItemList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(getContext(), "Failed to load data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
