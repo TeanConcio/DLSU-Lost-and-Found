@@ -90,7 +90,8 @@ public class UpdateFoundActivity extends AppCompatActivity {
 
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("foundItems").child(id);
 
-        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, 0, date);
+        //TODO: Set image
+        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, null, date);
         dR.setValue(foundItem);
         Toast.makeText(this, "Item updated", Toast.LENGTH_LONG).show();
 

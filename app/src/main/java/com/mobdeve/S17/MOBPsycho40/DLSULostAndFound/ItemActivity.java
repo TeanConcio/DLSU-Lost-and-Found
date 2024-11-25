@@ -2,7 +2,10 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +49,26 @@ public class ItemActivity extends AppCompatActivity {
                         itemDate.setText(data.getStringExtra("date"));
                         itemDescription.setText(data.getStringExtra("description"));
                         updateStatusCard(data.getStringExtra("status"));
+
+                        String imageString = data.getStringExtra("image");
+                        if (imageString != null && !imageString.isEmpty()) {
+                            try {
+                                // Decode the base64 string to a byte array
+                                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+
+                                // Decode the byte array to a Bitmap
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                                // Set the Bitmap to the ImageView
+                                itemImage.setImageBitmap(bitmap);
+                            } catch (IllegalArgumentException e) {
+                                // Handle error if base64 decoding fails
+                                e.printStackTrace();
+                                itemImage.setImageResource(0);
+                            }
+                        } else {
+                            itemImage.setImageResource(0);
+                        }
                     }
                 }
             });
@@ -81,7 +104,6 @@ public class ItemActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String itemID = i.getStringExtra("id");
-        itemImage.setImageResource(i.getIntExtra("image",0));
         itemName.setText(i.getStringExtra("name"));
         itemCategory.setText(i.getStringExtra("category"));
         itemStatus.setText(i.getStringExtra("status"));
@@ -89,6 +111,26 @@ public class ItemActivity extends AppCompatActivity {
         itemLocation.setText(i.getStringExtra("location"));
         itemDate.setText(i.getStringExtra("date"));
         itemDescription.setText(i.getStringExtra("description"));
+
+        String imageString = i.getStringExtra("image");
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                itemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                itemImage.setImageResource(0);
+            }
+        } else {
+            itemImage.setImageResource(0);
+        }
 
 
         //LOST ITEMS
@@ -108,7 +150,7 @@ public class ItemActivity extends AppCompatActivity {
             btn_update_item.setOnClickListener(v -> {
                 Intent intent = new Intent(ItemActivity.this, UpdateLostActivity.class);
                 intent.putExtra("id", itemID);
-                intent.putExtra("image", i.getIntExtra("image", 0));
+                intent.putExtra("image", imageString);
                 intent.putExtra("name", itemName.getText().toString());
                 intent.putExtra("status", itemStatus.getText().toString());
                 intent.putExtra("category", itemCategory.getText().toString());

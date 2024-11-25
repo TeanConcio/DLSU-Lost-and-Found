@@ -60,7 +60,8 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final FoundItem currentItem = filteredList.get(position);
 
-        holder.foundItemImage.setImageResource(currentItem.getImage());
+        //TODO: Set image
+        holder.foundItemImage.setImageResource(0);
         holder.foundItemName.setText(currentItem.getName());
         holder.foundItemDate.setText(currentItem.getDateFound());
         holder.foundItemLocation.setText(currentItem.getLocation());

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.databinding.ActivityCreateLo
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 public class CreateLostActivity extends AppCompatActivity {
@@ -46,6 +48,8 @@ public class CreateLostActivity extends AppCompatActivity {
 
     private ActivityCreateLostBinding binding;
 
+    private String encodedImage = "";
+
     private final ActivityResultCallback<Uri> getContent = uri -> {
         if (uri != null) {
             try {
@@ -53,6 +57,8 @@ public class CreateLostActivity extends AppCompatActivity {
 
                 binding.createLostItemImage.setBackground(null);
                 binding.createLostItemImage.setImageBitmap(selectedImage);
+
+                encodedImage = encodeImageToBase64(selectedImage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -143,7 +149,11 @@ public class CreateLostActivity extends AppCompatActivity {
 
         //Add the found item
         String id = databaseLostItems.push().getKey();
-        LostItem lostItem = new LostItem(id, title, category, description, campus, location, 0, dateStr, userID);
+        LostItem lostItem = new LostItem(id, title, category, description, campus, location, null, dateStr, userID);
+
+        if (!encodedImage.isEmpty()) {
+            lostItem.setImage(encodedImage);
+        }
 
         databaseLostItems.child(id).setValue(lostItem);
 
@@ -151,6 +161,8 @@ public class CreateLostActivity extends AppCompatActivity {
         input_location.setText("");
         input_description.setText("");
         input_date.setText("");
+        encodedImage = "";
+
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         finish();
 
@@ -205,4 +217,10 @@ public class CreateLostActivity extends AppCompatActivity {
         });
     }
 
+    private String encodeImageToBase64(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
 }

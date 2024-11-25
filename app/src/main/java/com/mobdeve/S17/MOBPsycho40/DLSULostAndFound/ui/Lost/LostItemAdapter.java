@@ -2,6 +2,8 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Lost;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import android.util.Base64;
 
 public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHolder> {
 
@@ -34,6 +37,7 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     private String query = "";
     private String campus = "";
     private String location = "";
+    private String image = "";
     private Date startDate = null;
     private Date endDate = null;
     private int sortBy = 0; // Default sort by newest post
@@ -59,11 +63,31 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final LostItem currentItem = filteredList.get(position);
 
-        holder.lostItemImage.setImageResource(currentItem.getImage());
+        holder.lostItemImage.setImageResource(0);
         holder.lostItemName.setText(currentItem.getName());
         holder.lostItemDate.setText(currentItem.getDateLost());
         holder.lostItemLocation.setText(currentItem.getLocation());
         holder.lostItemDescription.setText(currentItem.getDescription());
+
+        String imageString = currentItem.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                holder.lostItemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                holder.lostItemImage.setImageResource(0);
+            }
+        } else {
+            holder.lostItemImage.setImageResource(0);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

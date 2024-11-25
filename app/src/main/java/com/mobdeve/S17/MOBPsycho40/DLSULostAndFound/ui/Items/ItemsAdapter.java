@@ -43,7 +43,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position) {
         final LostItem currentItem = myLostItemList.get(position);
-        holder.lostItemImage.setImageResource(currentItem.getImage());
+
+        //TODO: Set image
+        holder.lostItemImage.setImageResource(0);
         holder.lostItemName.setText(currentItem.getName());
         holder.lostItemDate.setText(currentItem.getDateLost());
         holder.lostItemLocation.setText(currentItem.getLocation());

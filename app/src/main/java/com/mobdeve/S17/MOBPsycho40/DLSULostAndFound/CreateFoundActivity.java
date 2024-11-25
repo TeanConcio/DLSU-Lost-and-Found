@@ -115,7 +115,7 @@ public class CreateFoundActivity extends AppCompatActivity {
 
         // Add the found item
         String id = databaseFoundItems.push().getKey();
-        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, 0, dateStr);
+        FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, null, dateStr);
 
         databaseFoundItems.child(id).setValue(foundItem);
 

@@ -20,7 +20,7 @@ public class FoundItem extends Item {
                      String description,
                      String campus,
                      String location,
-                     Integer image,
+                     String image,
                      String dateFound) {
         super(id,
                 name,

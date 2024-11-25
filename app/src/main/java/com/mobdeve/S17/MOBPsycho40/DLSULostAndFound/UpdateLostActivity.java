@@ -2,13 +2,21 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,11 +29,32 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.LostItem;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 public class UpdateLostActivity extends AppCompatActivity {
 
     private ActivityUpdateLostBinding binding;
+
+    private String encodedImage = "";
+
+    private final ActivityResultCallback<Uri> getContent = uri -> {
+        if (uri != null) {
+            try {
+                Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                binding.updateLostItemImage.setBackground(null);
+                binding.updateLostItemImage.setImageBitmap(selectedImage);
+
+                encodedImage = encodeImageToBase64(selectedImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private final ActivityResultLauncher<String> pickImage =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), getContent);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +82,30 @@ public class UpdateLostActivity extends AppCompatActivity {
 
         setupDropdowns(status, category, campus);
         setupDatePicker();
+
+        encodedImage = i.getStringExtra("image");
+        if (encodedImage != null && !encodedImage.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(encodedImage, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                binding.updateLostItemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                binding.updateLostItemImage.setImageResource(0);
+            }
+        } else {
+            binding.updateLostItemImage.setImageResource(0);
+        }
+
+        binding.updateLostItemImage.setOnClickListener(v -> {
+            pickImage.launch("image/*");
+        });
 
         binding.btnUpdateLostItem.setOnClickListener(v -> {
             updateLostItem();
@@ -88,7 +141,12 @@ public class UpdateLostActivity extends AppCompatActivity {
 
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("lostItems").child(id);
 
-        LostItem lostItem = new LostItem(id, title, category, description, campus, location, 0, date, userID);
+        LostItem lostItem = new LostItem(id, title, category, description, campus, location, null, date, userID);
+
+        if (!encodedImage.isEmpty()) {
+            lostItem.setImage(encodedImage);
+        }
+
         dR.setValue(lostItem);
         Toast.makeText(this, "Lost item updated", Toast.LENGTH_LONG).show();
 
@@ -100,6 +158,7 @@ public class UpdateLostActivity extends AppCompatActivity {
         resultIntent.putExtra("status", statusStr);
         resultIntent.putExtra("category", categoryStr);
         resultIntent.putExtra("campus", campus);
+        resultIntent.putExtra("image", encodedImage);
 
         setResult(RESULT_OK, resultIntent);
         finish();
@@ -188,5 +247,12 @@ public class UpdateLostActivity extends AppCompatActivity {
             );
             datePickerDialog.show();
         });
+    }
+
+    private String encodeImageToBase64(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }

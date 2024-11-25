@@ -12,7 +12,7 @@ public abstract class Item {
     private String description;
     private String campus;
     private String location;
-    private Integer image;
+    private String image;
 
     private String dateClaimed;
 
@@ -27,7 +27,7 @@ public abstract class Item {
                 String description,
                 String campus,
                 String location,
-                Integer image) {
+                String image) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -89,10 +89,10 @@ public abstract class Item {
         this.location = location;
     }
 
-    public Integer getImage() {
+    public String getImage() {
         return this.image;
     }
-    public void setImage(Integer image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

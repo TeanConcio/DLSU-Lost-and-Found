@@ -19,7 +19,7 @@ public class LostItem extends Item {
                     String description,
                     String campus,
                     String location,
-                    Integer image,
+                    String image,
                     String dateLost,
                     String userID) {
         super(id,
