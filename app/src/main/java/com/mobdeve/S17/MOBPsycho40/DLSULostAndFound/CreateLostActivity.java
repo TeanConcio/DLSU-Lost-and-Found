@@ -4,7 +4,10 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -13,7 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,14 +44,28 @@ public class CreateLostActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
-
     private ActivityCreateLostBinding binding;
+
+    private final ActivityResultCallback<Uri> getContent = uri -> {
+        if (uri != null) {
+            try {
+                Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                binding.createLostItemImage.setBackground(null);
+                binding.createLostItemImage.setImageBitmap(selectedImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private final ActivityResultLauncher<String> pickImage =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), getContent);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
 
         databaseLostItems = FirebaseDatabase.getInstance().getReference("lostItems");
 
@@ -53,7 +74,6 @@ public class CreateLostActivity extends AppCompatActivity {
         binding = ActivityCreateLostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // getting views
         input_title = binding.inputTitle;
         input_location = binding.inputLocation;
         input_description = binding.inputDescription;
@@ -73,6 +93,10 @@ public class CreateLostActivity extends AppCompatActivity {
 
         setupDropdowns();
         setupDatePicker();
+
+        binding.createLostItemImage.setOnClickListener(v -> {
+            pickImage.launch("image/*");
+        });
     }
 
     protected void addLostItem(){
@@ -180,6 +204,5 @@ public class CreateLostActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
     }
-
 
 }
