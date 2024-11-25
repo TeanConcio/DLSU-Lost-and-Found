@@ -154,25 +154,32 @@ public class CreateLostActivity extends AppCompatActivity {
     }
 
     private void setupDatePicker() {
-        TextView inputDate = binding.inputDate;
-        inputDate.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar calendar = Calendar.getInstance();
 
+        // Initialize the TextView with today's date
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Format the current date and set it to the TextView
+        String currentDate = (month + 1) + "/" + day + "/" + year;
+        binding.inputDate.setText(currentDate);
+
+        binding.inputDate.setOnClickListener(v -> {
+            // Open the DatePickerDialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     this,
                     R.style.CustomDatePickerDialog,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        // Format the date as MM/dd/yyyy
-                        String date = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
-                        inputDate.setText(date);
+                        // Format the selected date as MM/dd/yyyy and update the TextView
+                        String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+                        binding.inputDate.setText(selectedDate);
                     },
-                    year, month, day
+                    year, month, day // Use the current date as the default date
             );
             datePickerDialog.show();
         });
     }
+
 
 }
