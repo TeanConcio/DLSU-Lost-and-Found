@@ -1,7 +1,9 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,6 +36,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 public class UpdateFoundActivity extends AppCompatActivity {
+
+    private static final int CAMERA_PERMISSION_CODE = 100;
 
     private ActivityUpdateFoundBinding binding;
 
@@ -104,7 +109,7 @@ public class UpdateFoundActivity extends AppCompatActivity {
         }
 
         binding.updateFoundItemImage.setOnClickListener(v -> {
-            pickImage.launch("image/*");
+            showImageSourceDialog();
         });
 
         binding.btnUpdateFoundItem.setOnClickListener(v -> {
@@ -164,6 +169,65 @@ public class UpdateFoundActivity extends AppCompatActivity {
         finish();
 
     }
+
+    private boolean checkAndRequestPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+            return false; // Permission not granted yet
+        }
+        return true; // Permission already granted
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                captureImage();
+            } else {
+                Toast.makeText(this, "Camera permission denied.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void captureImage() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            captureImageLauncher.launch(cameraIntent);
+        }
+    }
+
+    private final ActivityResultLauncher<Intent> captureImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+                    if (photo != null) {
+                        binding.updateFoundItemImage.setImageBitmap(photo);
+                        encodedImage = encodeImageToBase64(photo, 3); // Encode captured image to Base64
+                    }
+                }
+            });
+
+    private void showImageSourceDialog() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Select Image Source")
+                .setItems(new String[]{"Gallery", "Camera"}, (dialog, which) -> {
+                    if (which == 0) {
+                        // Open Gallery
+                        pickImage.launch("image/*");
+                    } else if (which == 1) {
+                        // Open Camera
+                        if (checkAndRequestPermissions()) {
+                            captureImage();
+                        } else {
+                            Toast.makeText(this, "Camera permission required.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .create()
+                .show();
+    }
+
 
     private void setupDropdowns(String status, String category, String campus) {
         // Setup campus spinner
