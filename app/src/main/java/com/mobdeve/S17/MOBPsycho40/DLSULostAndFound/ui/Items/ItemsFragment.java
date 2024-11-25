@@ -74,6 +74,15 @@ public class ItemsFragment extends Fragment {
     }
 
     private void fetchMyLostItemsFromDatabase() {
+        // Get user logged in from SharedPreferences
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (!isLoggedIn) {
+            binding.textLoginPrompt.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            binding.textLoginPrompt.setVisibility(View.GONE);
+        }
+
         // Get the userID from SharedPreferences
         String currentUserId = sharedPreferences.getString("userID", "");
 
