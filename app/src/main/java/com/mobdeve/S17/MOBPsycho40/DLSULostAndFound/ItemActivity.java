@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ItemActivity extends AppCompatActivity {
+    String imageString;
     TextView itemName, itemCategory, itemLocation, itemDate, itemDescription, itemCampus, itemStatus;
     ImageView itemImage;
 
@@ -50,7 +51,7 @@ public class ItemActivity extends AppCompatActivity {
                         itemDescription.setText(data.getStringExtra("description"));
                         updateStatusCard(data.getStringExtra("status"));
 
-                        String imageString = data.getStringExtra("image");
+                       imageString = data.getStringExtra("image");
                         if (imageString != null && !imageString.isEmpty()) {
                             try {
                                 // Decode the base64 string to a byte array
@@ -112,7 +113,7 @@ public class ItemActivity extends AppCompatActivity {
         itemDate.setText(i.getStringExtra("date"));
         itemDescription.setText(i.getStringExtra("description"));
 
-        String imageString = i.getStringExtra("image");
+        imageString = i.getStringExtra("image");
         if (imageString != null && !imageString.isEmpty()) {
             try {
                 // Decode the base64 string to a byte array
@@ -207,8 +208,6 @@ public class ItemActivity extends AppCompatActivity {
         } else{
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
-            btn_delete_item.setVisibility(Button.GONE);
-            //btn_update_item.setVisibility(Button.GONE);
         }
 
 
@@ -218,7 +217,6 @@ public class ItemActivity extends AppCompatActivity {
         if ("Lost".equals(status)) {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.red_200));
             itemStatus.setTextColor(getResources().getColor(R.color.red_700));
-            btn_delete_item.setVisibility(Button.GONE);
         } else if ("Found".equals(status)) {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.green_200));
             itemStatus.setTextColor(getResources().getColor(R.color.green_700));
@@ -230,7 +228,6 @@ public class ItemActivity extends AppCompatActivity {
         } else {
             itemStatusCard.setCardBackgroundColor(getResources().getColor(R.color.yellow_200));
             itemStatus.setTextColor(getResources().getColor(R.color.yellow_700));
-            btn_delete_item.setVisibility(Button.GONE);
         }
     }
 
