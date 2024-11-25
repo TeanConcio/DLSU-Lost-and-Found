@@ -55,7 +55,7 @@ public class CreateFoundActivity extends AppCompatActivity {
                 binding.createFoundItemImage.setBackground(null);
                 binding.createFoundItemImage.setImageBitmap(selectedImage);
 
-                encodedImage = encodeImageToBase64(selectedImage);
+                encodedImage = encodeImageToBase64(selectedImage, 3);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -215,9 +215,24 @@ public class CreateFoundActivity extends AppCompatActivity {
         });
     }
 
-    private String encodeImageToBase64(Bitmap image) {
+    private String encodeImageToBase64(Bitmap image, int maxFileSizeKB) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        int quality = 100; // Start with max quality
+        int sizeX = image.getWidth();
+        int sizeY = image.getHeight();
+        image.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
+
+        // Compress until the file size is under the max limit
+        while (byteArrayOutputStream.toByteArray().length / 1024 > maxFileSizeKB && quality > 10) {
+            byteArrayOutputStream.reset(); // Clear the stream
+            quality -= 10; // Reduce quality by 10%
+            sizeX *= 0.9; // Reduce size by 10%
+            sizeY *= 0.9; // Reduce size by 10%
+            image = Bitmap.createScaledBitmap(image, sizeX, sizeY, true);
+            image.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
+        }
+
+        // Convert to Base64 string
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
