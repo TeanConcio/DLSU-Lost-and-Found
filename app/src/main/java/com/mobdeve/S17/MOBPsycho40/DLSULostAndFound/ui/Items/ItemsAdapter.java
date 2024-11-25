@@ -2,6 +2,9 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Items;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,12 +47,31 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position) {
         final LostItem currentItem = myLostItemList.get(position);
 
-        //TODO: Set image
         holder.lostItemImage.setImageResource(0);
         holder.lostItemName.setText(currentItem.getName());
         holder.lostItemDate.setText(currentItem.getDateLost());
         holder.lostItemLocation.setText(currentItem.getLocation());
         holder.itemStatus.setText(currentItem.getStatus().getString());
+
+        String imageString = currentItem.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                holder.lostItemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                holder.lostItemImage.setImageResource(0);
+            }
+        } else {
+            holder.lostItemImage.setImageResource(0);
+        }
 
         if (currentItem.getStatus() == ItemStatus.Lost) {
             holder.itemStatusCard.setCardBackgroundColor(context.getResources().getColor(R.color.red_200));
@@ -58,7 +80,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             holder.itemStatusCard.setCardBackgroundColor(context.getResources().getColor(R.color.yellow_200));
             holder.itemStatus.setTextColor(context.getResources().getColor(R.color.yellow_700));
         }
-
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
