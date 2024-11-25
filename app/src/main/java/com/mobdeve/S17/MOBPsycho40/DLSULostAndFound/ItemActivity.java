@@ -184,7 +184,7 @@ public class ItemActivity extends AppCompatActivity {
             btn_update_item.setOnClickListener(v -> {
                 Intent intent = new Intent(ItemActivity.this, UpdateFoundActivity.class);
                 intent.putExtra("id", itemID);
-                intent.putExtra("image", i.getIntExtra("image", 0));
+                intent.putExtra("image", imageString);
                 intent.putExtra("name", itemName.getText().toString());
                 intent.putExtra("status", itemStatus.getText().toString());
                 intent.putExtra("category", itemCategory.getText().toString());

@@ -2,13 +2,21 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,13 +29,32 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 public class UpdateFoundActivity extends AppCompatActivity {
 
     private ActivityUpdateFoundBinding binding;
 
+    private String encodedImage = "";
 
+    private final ActivityResultCallback<Uri> getContent = uri -> {
+        if (uri != null) {
+            try {
+                Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                binding.updateFoundItemImage.setBackground(null);
+                binding.updateFoundItemImage.setImageBitmap(selectedImage);
+
+                encodedImage = encodeImageToBase64(selectedImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private final ActivityResultLauncher<String> pickImage =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), getContent);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +82,30 @@ public class UpdateFoundActivity extends AppCompatActivity {
 
         setupDropdowns(status, category, campus);
         setupDatePicker();
+
+        encodedImage = i.getStringExtra("image");
+        if (encodedImage != null && !encodedImage.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(encodedImage, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                binding.updateFoundItemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                binding.updateFoundItemImage.setImageResource(0);
+            }
+        } else {
+            binding.updateFoundItemImage.setImageResource(0);
+        }
+
+        binding.updateFoundItemImage.setOnClickListener(v -> {
+            pickImage.launch("image/*");
+        });
 
         binding.btnUpdateFoundItem.setOnClickListener(v -> {
             updateFoundItem();
@@ -90,8 +141,12 @@ public class UpdateFoundActivity extends AppCompatActivity {
 
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("foundItems").child(id);
 
-        //TODO: Set image
         FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, null, date);
+
+        if (!encodedImage.isEmpty()) {
+            foundItem.setImage(encodedImage);
+        }
+
         dR.setValue(foundItem);
         Toast.makeText(this, "Item updated", Toast.LENGTH_LONG).show();
 
@@ -103,6 +158,7 @@ public class UpdateFoundActivity extends AppCompatActivity {
         resultIntent.putExtra("status", statusStr);
         resultIntent.putExtra("category", categoryStr);
         resultIntent.putExtra("campus", campus);
+        resultIntent.putExtra("image", encodedImage);
 
         setResult(RESULT_OK, resultIntent);
         finish();
@@ -193,5 +249,10 @@ public class UpdateFoundActivity extends AppCompatActivity {
         });
     }
 
-
+    private String encodeImageToBase64(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
 }

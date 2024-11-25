@@ -1,7 +1,11 @@
 package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -9,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +32,7 @@ import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.Category;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.FoundItem;
 import com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.models.ItemStatus;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 
@@ -36,6 +44,26 @@ public class CreateFoundActivity extends AppCompatActivity {
     EditText input_title, input_location, input_description;
     Spinner spinner_campus, spinner_category;
     TextView input_date;
+
+    private String encodedImage = "";
+
+    private final ActivityResultCallback<Uri> getContent = uri -> {
+        if (uri != null) {
+            try {
+                Bitmap selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                binding.createFoundItemImage.setBackground(null);
+                binding.createFoundItemImage.setImageBitmap(selectedImage);
+
+                encodedImage = encodeImageToBase64(selectedImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private final ActivityResultLauncher<String> pickImage =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), getContent);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +96,10 @@ public class CreateFoundActivity extends AppCompatActivity {
 
         setupDropdowns();
         setupDatePicker();
+
+        binding.createFoundItemImage.setOnClickListener(v -> {
+            pickImage.launch("image/*");
+        });
     }
 
     private void addFoundItem() {
@@ -117,6 +149,10 @@ public class CreateFoundActivity extends AppCompatActivity {
         String id = databaseFoundItems.push().getKey();
         FoundItem foundItem = new FoundItem(id, title, status, category, description, campus, location, null, dateStr);
 
+        if (!encodedImage.isEmpty()) {
+            foundItem.setImage(encodedImage);
+        }
+
         databaseFoundItems.child(id).setValue(foundItem);
 
         // Clear the input fields
@@ -124,6 +160,7 @@ public class CreateFoundActivity extends AppCompatActivity {
         input_location.setText("");
         input_description.setText("");
         input_date.setText("");
+        encodedImage = "";
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -178,4 +215,10 @@ public class CreateFoundActivity extends AppCompatActivity {
         });
     }
 
+    private String encodeImageToBase64(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
 }

@@ -2,6 +2,9 @@ package com.mobdeve.S17.MOBPsycho40.DLSULostAndFound.ui.Found;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,11 +63,30 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final FoundItem currentItem = filteredList.get(position);
 
-        //TODO: Set image
         holder.foundItemImage.setImageResource(0);
         holder.foundItemName.setText(currentItem.getName());
         holder.foundItemDate.setText(currentItem.getDateFound());
         holder.foundItemLocation.setText(currentItem.getLocation());
+
+        String imageString = currentItem.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            try {
+                // Decode the base64 string to a byte array
+                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+
+                // Decode the byte array to a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                // Set the Bitmap to the ImageView
+                holder.foundItemImage.setImageBitmap(bitmap);
+            } catch (IllegalArgumentException e) {
+                // Handle error if base64 decoding fails
+                e.printStackTrace();
+                holder.foundItemImage.setImageResource(0);
+            }
+        } else {
+            holder.foundItemImage.setImageResource(0);
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, ItemActivity.class);
@@ -178,7 +200,8 @@ public class FoundItemAdapter extends RecyclerView.Adapter<FoundItemAdapter.View
         this.foundItemList.addAll(newFoundItemList); // Update data
         this.filteredList.clear();
         this.filteredList.addAll(newFoundItemList); // Reset filters
-        notifyDataSetChanged(); // Notify RecyclerView about the dataset change
+        this.applyFilters();
+        //notifyDataSetChanged(); // Notify RecyclerView about the dataset change
     }
 
 

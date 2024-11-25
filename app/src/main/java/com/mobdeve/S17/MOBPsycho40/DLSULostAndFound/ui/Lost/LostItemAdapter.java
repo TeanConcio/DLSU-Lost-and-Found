@@ -37,7 +37,6 @@ public class LostItemAdapter extends RecyclerView.Adapter<LostItemAdapter.ViewHo
     private String query = "";
     private String campus = "";
     private String location = "";
-    private String image = "";
     private Date startDate = null;
     private Date endDate = null;
     private int sortBy = 0; // Default sort by newest post
