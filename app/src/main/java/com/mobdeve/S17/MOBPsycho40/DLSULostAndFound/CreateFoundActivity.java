@@ -205,7 +205,7 @@ public class CreateFoundActivity extends AppCompatActivity {
                     Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
                     if (photo != null) {
                         binding.createFoundItemImage.setImageBitmap(photo);
-                        encodedImage = encodeImageToBase64(photo, 3); // Encode captured image to Base64
+                        encodedImage = encodeImageToBase64(photo); // Encode captured image to Base64
                     }
                 }
             });
@@ -282,7 +282,17 @@ public class CreateFoundActivity extends AppCompatActivity {
         });
     }
 
+    private String encodeImageToBase64(Bitmap image) { return encodeImageToBase64(image, -1); }
     private String encodeImageToBase64(Bitmap image, int maxFileSizeKB) {
+
+        // Set maxFileSizeKB to -1 to disable file size limit
+        if (maxFileSizeKB == -1) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         int quality = 100; // Start with max quality
         int sizeX = image.getWidth();
@@ -292,9 +302,9 @@ public class CreateFoundActivity extends AppCompatActivity {
         // Compress until the file size is under the max limit
         while (byteArrayOutputStream.toByteArray().length / 1024 > maxFileSizeKB && quality > 10) {
             byteArrayOutputStream.reset(); // Clear the stream
-            quality -= 10; // Reduce quality by 10%
-            sizeX *= 0.9; // Reduce size by 10%
-            sizeY *= 0.9; // Reduce size by 10%
+            quality -= 5; // Reduce quality by 5%
+            sizeX *= 0.95; // Reduce size by 5%
+            sizeY *= 0.95; // Reduce size by 5%
             image = Bitmap.createScaledBitmap(image, sizeX, sizeY, true);
             image.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
         }
